@@ -4,6 +4,8 @@ A native macOS Menu Bar application to monitor your Ollama token usage, inspired
 
 OllamaBar acts as a local proxy for your Ollama server. It intercepts requests, counts the input/output tokens in real-time, and displays your daily and total consumption directly in your macOS Menu Bar.
 
+![OllamaBar Screenshot](screenshot.png)
+
 ## Features
 - **Token Tracking:** Real-time monitoring of Prompt (Input) and Eval (Output) tokens.
 - **Daily & Total Stats:** View usage for the current day and your all-time total.
