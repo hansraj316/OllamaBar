@@ -18,7 +18,12 @@ OllamaBar acts as a local proxy for your Ollama server, intercepting requests to
 ## Installation
 1. Download the [latest release](https://github.com/hansraj316/OllamaBar/releases) (OllamaBar.zip)
 2. Unzip and move `OllamaBar.app` to your `/Applications` folder
-3. Open `OllamaBar.app` — a server icon appears in your Menu Bar
+3. **⚠️ Security Bypass (First Run Only):**
+   Open your Terminal and run the following to allow the app to run:
+   ```bash
+   xattr -cr /Applications/OllamaBar.app
+   ```
+4. Open `OllamaBar.app` — a server icon appears in your Menu Bar
 
 ## Usage
 Change your Ollama client's API URL to the OllamaBar proxy port:
