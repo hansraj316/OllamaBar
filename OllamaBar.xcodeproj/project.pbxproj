@@ -13,6 +13,7 @@
 		2276EA853966CD7FB0782BF3 /* BudgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E7D79818158095EFC03461 /* BudgetSnapshot.swift */; };
 		36BF8AFD521C2D2DFA9C4D7E /* TokenPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C76F6DBC1351FA77ED2453E /* TokenPair.swift */; };
 		36C1D5B979B6F8232798E8FB /* OllamaBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */; };
+		A1B2C3D4E5F60001A2B3C4D5 /* PersistenceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002A2B3C4D5 /* PersistenceManagerTests.swift */; };
 		5F2F02D80F97E76D7E0EEA45 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB444A0945A6BB757CBFE342 /* SettingsStore.swift */; };
 		626603FCFC0A302A59822EDA /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D574AB0BC06398CA3CA4EB56 /* AppViewModel.swift */; };
 		6E9288AE3AECED5C5F964878 /* ProxyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346990679B2F7BF5905F058A /* ProxyServer.swift */; };
@@ -41,6 +42,7 @@
 		43743F5BDFA0824282084FBE /* MenuBarPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopover.swift; sourceTree = "<group>"; };
 		48330667067ACDF724D33ECB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaBarTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002A2B3C4D5 /* PersistenceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManagerTests.swift; sourceTree = "<group>"; };
 		7D48B8D2F6406525C10FC20A /* ProxyConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyConnection.swift; sourceTree = "<group>"; };
 		8C76F6DBC1351FA77ED2453E /* TokenPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPair.swift; sourceTree = "<group>"; };
 		92933156460136F8D1ECA5B7 /* NDJSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NDJSONParser.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */,
+				A1B2C3D4E5F60002A2B3C4D5 /* PersistenceManagerTests.swift */,
 			);
 			path = OllamaBarTests;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36C1D5B979B6F8232798E8FB /* OllamaBarTests.swift in Sources */,
+				A1B2C3D4E5F60001A2B3C4D5 /* PersistenceManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
