@@ -16,7 +16,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Install xcodegen
+      run: brew install xcodegen
+    - name: Generate Xcode project
+      run: xcodegen generate
     - name: Build
-      run: swift build -v
+      run: xcodebuild -scheme OllamaBar -configuration Debug build CODE_SIGNING_ALLOWED=NO
     - name: Run tests
-      run: swift test -v
+      run: xcodebuild test -scheme OllamaBar -destination 'platform=macOS,arch=arm64' CODE_SIGNING_ALLOWED=NO
