@@ -1,0 +1,51 @@
+name: OllamaBar
+options:
+  bundleIdPrefix: com.ollamabar
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.0"
+settings:
+  base:
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    SWIFT_VERSION: "5.9"
+
+targets:
+  OllamaBar:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: OllamaBar
+        excludes:
+          - "**/*.entitlements"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ollamabar.OllamaBar
+        INFOPLIST_FILE: OllamaBar/Info.plist
+        CODE_SIGN_ENTITLEMENTS: OllamaBar/OllamaBar.entitlements
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: NO
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGNING_REQUIRED: NO
+        CODE_SIGNING_ALLOWED: NO
+    entitlements:
+      path: OllamaBar/OllamaBar.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+        com.apple.security.network.client: true
+        com.apple.security.network.server: true
+
+  OllamaBarTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - OllamaBarTests
+    dependencies:
+      - target: OllamaBar
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ollamabar.OllamaBarTests
+        CODE_SIGNING_REQUIRED: NO
+        CODE_SIGNING_ALLOWED: NO

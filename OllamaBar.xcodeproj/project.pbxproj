@@ -1,0 +1,489 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A23CF23053C78D5BB648247 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCA030ACCDCE4DC26750F02 /* PersistenceManager.swift */; };
+		1E7F9FDBE5822BC5E1F70578 /* OllamaBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ABCCB1BD095FD21A52434 /* OllamaBarApp.swift */; };
+		20C67158214E4E324B0F1769 /* MenuBarIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523EA5F58726CE3E4403B57 /* MenuBarIconView.swift */; };
+		2276EA853966CD7FB0782BF3 /* BudgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E7D79818158095EFC03461 /* BudgetSnapshot.swift */; };
+		36BF8AFD521C2D2DFA9C4D7E /* TokenPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C76F6DBC1351FA77ED2453E /* TokenPair.swift */; };
+		36C1D5B979B6F8232798E8FB /* OllamaBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */; };
+		5F2F02D80F97E76D7E0EEA45 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB444A0945A6BB757CBFE342 /* SettingsStore.swift */; };
+		626603FCFC0A302A59822EDA /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D574AB0BC06398CA3CA4EB56 /* AppViewModel.swift */; };
+		6E9288AE3AECED5C5F964878 /* ProxyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346990679B2F7BF5905F058A /* ProxyServer.swift */; };
+		845150D55FF581721DF6886C /* UsageRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD19E9BA0A568DB74531607C /* UsageRecord.swift */; };
+		9E9FDE9EB9D6FEC015D43F3A /* ProxyConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D48B8D2F6406525C10FC20A /* ProxyConnection.swift */; };
+		AF2BC450F512F48D42F548FC /* MenuBarPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43743F5BDFA0824282084FBE /* MenuBarPopover.swift */; };
+		BC46828391AB185CA492821D /* UsageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31226696FE1FF4CAA05CB042 /* UsageStore.swift */; };
+		DAB601114E050F9E41D4CCD1 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D558FD8CC97B7E11502890C5 /* Settings.swift */; };
+		EFB2318A919F4F6F2452C713 /* NDJSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92933156460136F8D1ECA5B7 /* NDJSONParser.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ED52DFB73A66C8EC78F3581C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F9068073EED44E827EBD04D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2B0B0C0222CF51CA01D24825;
+			remoteInfo = OllamaBar;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1DCA030ACCDCE4DC26750F02 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
+		31226696FE1FF4CAA05CB042 /* UsageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStore.swift; sourceTree = "<group>"; };
+		346990679B2F7BF5905F058A /* ProxyServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyServer.swift; sourceTree = "<group>"; };
+		43743F5BDFA0824282084FBE /* MenuBarPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopover.swift; sourceTree = "<group>"; };
+		48330667067ACDF724D33ECB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaBarTests.swift; sourceTree = "<group>"; };
+		7D48B8D2F6406525C10FC20A /* ProxyConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyConnection.swift; sourceTree = "<group>"; };
+		8C76F6DBC1351FA77ED2453E /* TokenPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPair.swift; sourceTree = "<group>"; };
+		92933156460136F8D1ECA5B7 /* NDJSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NDJSONParser.swift; sourceTree = "<group>"; };
+		983ABCCB1BD095FD21A52434 /* OllamaBarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaBarApp.swift; sourceTree = "<group>"; };
+		A5169FFC4681B9D5F5C39B45 /* OllamaBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OllamaBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB444A0945A6BB757CBFE342 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		BD19E9BA0A568DB74531607C /* UsageRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageRecord.swift; sourceTree = "<group>"; };
+		C0E7D79818158095EFC03461 /* BudgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetSnapshot.swift; sourceTree = "<group>"; };
+		C523EA5F58726CE3E4403B57 /* MenuBarIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconView.swift; sourceTree = "<group>"; };
+		D558FD8CC97B7E11502890C5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		D574AB0BC06398CA3CA4EB56 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		FFDEC127D21B62A1D80FEBB0 /* OllamaBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OllamaBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2F4BD81CE3959BD1320E840D /* OllamaBarTests */ = {
+			isa = PBXGroup;
+			children = (
+				64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */,
+			);
+			path = OllamaBarTests;
+			sourceTree = "<group>";
+		};
+		64364CCCE85C2A0BCF36FBDF /* Proxy */ = {
+			isa = PBXGroup;
+			children = (
+				92933156460136F8D1ECA5B7 /* NDJSONParser.swift */,
+				7D48B8D2F6406525C10FC20A /* ProxyConnection.swift */,
+				346990679B2F7BF5905F058A /* ProxyServer.swift */,
+			);
+			path = Proxy;
+			sourceTree = "<group>";
+		};
+		908C457BB986B505BAC50C20 /* OllamaBar */ = {
+			isa = PBXGroup;
+			children = (
+				D574AB0BC06398CA3CA4EB56 /* AppViewModel.swift */,
+				48330667067ACDF724D33ECB /* Info.plist */,
+				983ABCCB1BD095FD21A52434 /* OllamaBarApp.swift */,
+				CB207BD16185926866A5A57C /* Models */,
+				64364CCCE85C2A0BCF36FBDF /* Proxy */,
+				F7FC38A38035B943726FFDEE /* Store */,
+				ADEF3F0F123F0C89F0A0C024 /* Views */,
+			);
+			path = OllamaBar;
+			sourceTree = "<group>";
+		};
+		ADEF3F0F123F0C89F0A0C024 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C523EA5F58726CE3E4403B57 /* MenuBarIconView.swift */,
+				43743F5BDFA0824282084FBE /* MenuBarPopover.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BD7293E2014D37D437EC0E15 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5169FFC4681B9D5F5C39B45 /* OllamaBar.app */,
+				FFDEC127D21B62A1D80FEBB0 /* OllamaBarTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CB207BD16185926866A5A57C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C0E7D79818158095EFC03461 /* BudgetSnapshot.swift */,
+				D558FD8CC97B7E11502890C5 /* Settings.swift */,
+				8C76F6DBC1351FA77ED2453E /* TokenPair.swift */,
+				BD19E9BA0A568DB74531607C /* UsageRecord.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F7035868B6A97B347988521E = {
+			isa = PBXGroup;
+			children = (
+				908C457BB986B505BAC50C20 /* OllamaBar */,
+				2F4BD81CE3959BD1320E840D /* OllamaBarTests */,
+				BD7293E2014D37D437EC0E15 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F7FC38A38035B943726FFDEE /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				1DCA030ACCDCE4DC26750F02 /* PersistenceManager.swift */,
+				AB444A0945A6BB757CBFE342 /* SettingsStore.swift */,
+				31226696FE1FF4CAA05CB042 /* UsageStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2B0B0C0222CF51CA01D24825 /* OllamaBar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E8C174664499C353D3DDD0DA /* Build configuration list for PBXNativeTarget "OllamaBar" */;
+			buildPhases = (
+				CDAABE5F0849A67B789BEA7E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OllamaBar;
+			packageProductDependencies = (
+			);
+			productName = OllamaBar;
+			productReference = A5169FFC4681B9D5F5C39B45 /* OllamaBar.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6EEBAA45247A07C8724D40DB /* OllamaBarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC215B5BF004B19972571756 /* Build configuration list for PBXNativeTarget "OllamaBarTests" */;
+			buildPhases = (
+				6BFC12C38DE25D8B9C674972 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				953071046BC246E239CAC1C7 /* PBXTargetDependency */,
+			);
+			name = OllamaBarTests;
+			packageProductDependencies = (
+			);
+			productName = OllamaBarTests;
+			productReference = FFDEC127D21B62A1D80FEBB0 /* OllamaBarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9F9068073EED44E827EBD04D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					2B0B0C0222CF51CA01D24825 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 57C7B60156DC708D32165E51 /* Build configuration list for PBXProject "OllamaBar" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F7035868B6A97B347988521E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BD7293E2014D37D437EC0E15 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B0B0C0222CF51CA01D24825 /* OllamaBar */,
+				6EEBAA45247A07C8724D40DB /* OllamaBarTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6BFC12C38DE25D8B9C674972 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				36C1D5B979B6F8232798E8FB /* OllamaBarTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDAABE5F0849A67B789BEA7E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				626603FCFC0A302A59822EDA /* AppViewModel.swift in Sources */,
+				2276EA853966CD7FB0782BF3 /* BudgetSnapshot.swift in Sources */,
+				20C67158214E4E324B0F1769 /* MenuBarIconView.swift in Sources */,
+				AF2BC450F512F48D42F548FC /* MenuBarPopover.swift in Sources */,
+				EFB2318A919F4F6F2452C713 /* NDJSONParser.swift in Sources */,
+				1E7F9FDBE5822BC5E1F70578 /* OllamaBarApp.swift in Sources */,
+				0A23CF23053C78D5BB648247 /* PersistenceManager.swift in Sources */,
+				9E9FDE9EB9D6FEC015D43F3A /* ProxyConnection.swift in Sources */,
+				6E9288AE3AECED5C5F964878 /* ProxyServer.swift in Sources */,
+				DAB601114E050F9E41D4CCD1 /* Settings.swift in Sources */,
+				5F2F02D80F97E76D7E0EEA45 /* SettingsStore.swift in Sources */,
+				36BF8AFD521C2D2DFA9C4D7E /* TokenPair.swift in Sources */,
+				845150D55FF581721DF6886C /* UsageRecord.swift in Sources */,
+				BC46828391AB185CA492821D /* UsageStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		953071046BC246E239CAC1C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2B0B0C0222CF51CA01D24825 /* OllamaBar */;
+			targetProxy = ED52DFB73A66C8EC78F3581C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0079CD2FFFD3DDEA303ED044 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		078756F092218AF0104CC958 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		2D7CC378086FFFE6DAA9AD04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ollamabar.OllamaBarTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OllamaBar.app/Contents/MacOS/OllamaBar";
+			};
+			name = Debug;
+		};
+		4AA302059DFBA7AF60F6292C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = OllamaBar/OllamaBar.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
+				INFOPLIST_FILE = OllamaBar/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ollamabar.OllamaBar;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6031FC6C2596E042ED45E6B6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_ENTITLEMENTS = OllamaBar/OllamaBar.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = NO;
+				INFOPLIST_FILE = OllamaBar/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ollamabar.OllamaBar;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		97C704A8D5C04387AC07DBBD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ollamabar.OllamaBarTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OllamaBar.app/Contents/MacOS/OllamaBar";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		57C7B60156DC708D32165E51 /* Build configuration list for PBXProject "OllamaBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				078756F092218AF0104CC958 /* Debug */,
+				0079CD2FFFD3DDEA303ED044 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E8C174664499C353D3DDD0DA /* Build configuration list for PBXNativeTarget "OllamaBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6031FC6C2596E042ED45E6B6 /* Debug */,
+				4AA302059DFBA7AF60F6292C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EC215B5BF004B19972571756 /* Build configuration list for PBXNativeTarget "OllamaBarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D7CC378086FFFE6DAA9AD04 /* Debug */,
+				97C704A8D5C04387AC07DBBD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9F9068073EED44E827EBD04D /* Project object */;
+}
