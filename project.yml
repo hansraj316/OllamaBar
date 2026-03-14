@@ -18,6 +18,8 @@ targets:
       - path: OllamaBar
         excludes:
           - "**/*.entitlements"
+      - path: OllamaBar/Assets.xcassets
+        type: folder
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
