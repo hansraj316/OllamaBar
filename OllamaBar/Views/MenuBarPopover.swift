@@ -18,19 +18,19 @@ struct MenuBarPopover: View {
                     Divider()
                     SettingsView()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
             
             Divider()
             footerButtons
         }
-        .frame(width: 320, height: 550)
+        .frame(width: 360, height: 600)
         .background(Color(NSColor.windowBackgroundColor))
     }
 
     private var header: some View {
         HStack {
-            Text("OllamaBar").font(.headline)
+            Text("OllamaBar")
+                .font(.headline)
             Spacer()
             Label(vm.isProxyRunning ? "Proxy Active" : "Proxy Stopped",
                   systemImage: vm.isProxyRunning ? "circle.fill" : "circle")
@@ -39,39 +39,28 @@ struct MenuBarPopover: View {
                 .labelStyle(.titleAndIcon)
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .padding(.vertical, 14)
     }
 
     private var footerButtons: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Button(action: { }) {
-                Text("About OllamaBar...")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 8)
-            
+            footerButton("About OllamaBar...") { }
             Divider()
-            
-            Button(action: { vm.resetStats() }) {
-                Text("Reset Stats")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 8)
-            
+            footerButton("Reset Stats") { vm.resetStats() }
             Divider()
-            
-            Button(action: { NSApp.terminate(nil) }) {
-                Text("Quit OllamaBar")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 8)
+            footerButton("Quit OllamaBar") { NSApp.terminate(nil) }
         }
+    }
+    
+    private func footerButton(_ title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
     }
 }
 
