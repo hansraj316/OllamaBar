@@ -36,7 +36,7 @@ struct HeatmapView: View {
 
             EfficiencyView()
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 20)
         .padding(.vertical, 10)
     }
 

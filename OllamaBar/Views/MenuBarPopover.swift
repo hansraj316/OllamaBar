@@ -4,12 +4,12 @@ struct MenuBarPopover: View {
     @Environment(AppViewModel.self) var vm
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             header
             Divider()
             
             ScrollView {
-                VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     StatsView()
                     Divider()
                     BreakdownView()
@@ -18,6 +18,7 @@ struct MenuBarPopover: View {
                     Divider()
                     SettingsView()
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             
             Divider()
@@ -37,18 +38,18 @@ struct MenuBarPopover: View {
                 .foregroundStyle(vm.isProxyRunning ? .green : .red)
                 .labelStyle(.titleAndIcon)
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 20)
         .padding(.vertical, 12)
     }
 
     private var footerButtons: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             Button(action: { }) {
                 Text("About OllamaBar...")
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.plain)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 20)
             .padding(.vertical, 8)
             
             Divider()
@@ -58,7 +59,7 @@ struct MenuBarPopover: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.plain)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 20)
             .padding(.vertical, 8)
             
             Divider()
@@ -68,7 +69,7 @@ struct MenuBarPopover: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .buttonStyle(.plain)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 20)
             .padding(.vertical, 8)
         }
     }

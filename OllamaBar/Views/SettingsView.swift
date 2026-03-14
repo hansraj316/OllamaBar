@@ -58,7 +58,7 @@ struct SettingsView: View {
                 .textFieldStyle(.roundedBorder).frame(width: 70)
             }
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 20)
         .padding(.vertical, 10)
     }
 

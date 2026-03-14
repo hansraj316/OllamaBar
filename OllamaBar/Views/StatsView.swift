@@ -23,7 +23,7 @@ struct StatsView: View {
             tokenRow(label: "Total", tokens: vm.usageStore.allTimeTotalTokens,
                      cost: vm.allTimeCost, bold: true)
         }
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 20)
         .padding(.vertical, 10)
     }
 
