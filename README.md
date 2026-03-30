@@ -1,12 +1,21 @@
+
 # OllamaBar
 
-A native macOS Menu Bar application to monitor your Ollama token usage, with real-time analytics and budget enforcement.
+> Native macOS Menu Bar application to monitor your Ollama token usage, with real-time analytics and budget enforcement.
+
+[![Indian Avengers](https://img.shields.io/badge/Managed%20By-Indian%20Avengers-orange?style=flat-square&logo=gitbook)](https://github.com/hansraj316/mission-control-openclaw)
+[![Status](https://img.shields.io/badge/Status-Sentinel%20Audited-green?style=flat-square)](https://github.com/hansraj316/OllamaBar)
 
 OllamaBar acts as a local proxy for your Ollama server, intercepting requests to count tokens, track usage patterns, and enforce optional daily budgets.
+
+## The Mission
+
+OllamaBar is a critical observability pillar of the **Indian Avengers** organization. It provides the **Token Efficiency & Budget Enforcement** required to scale a multi-agent "GitHub Factory" toward the **$1,000,000 revenue goal**. Every agent, from **Anusandhan (The Sentinel)** to **Parmanu (Engineering Commander)**, uses OllamaBar to ensure token usage is optimized and operational costs are locked.
 
 ![OllamaBar Screenshot](screenshot.png)
 
 ## Features
+
 - **Token Tracking** — Real-time prompt (input) and eval (output) token counts
 - **Daily & All-time Stats** — Usage for today and your all-time total, with optional cost estimation
 - **Token Budget Enforcer** — Set a daily token cap; soft mode warns, hard mode blocks requests with HTTP 429
