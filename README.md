@@ -57,5 +57,14 @@ xcodebuild test -scheme OllamaBar -destination 'platform=macOS,arch=arm64' \
   -only-testing:OllamaBarTests/UsageStoreTests
 ```
 
+## Claude Code / OpenClaw Integration
+
+OllamaBar pairs with the [Mission Control dashboard](https://github.com/hansraj316/mission-control-openclaw) to give full-stack observability across the Indian Avengers org:
+
+- **OllamaBar** → monitors local Ollama LLM usage (token budget, per-model breakdown)
+- **Mission Control** → monitors the 25-agent org (cron jobs, agent activity, security telemetry)
+
+Agents running via OpenClaw that use local models (Aditya, Dhruva) route through `http://127.0.0.1:11435` for token tracking.
+
 ## License
 MIT
