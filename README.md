@@ -16,13 +16,26 @@ OllamaBar is a critical observability pillar of the **Indian Avengers** organiza
 
 ## Features
 
-- **Token Tracking** — Real-time prompt (input) and eval (output) token counts
-- **Daily & All-time Stats** — Usage for today and your all-time total, with optional cost estimation
-- **Token Budget Enforcer** — Set a daily token cap; soft mode warns, hard mode blocks requests with HTTP 429
-- **Per-model & Per-app Breakdown** — See which models and clients (Cursor, Open-WebUI, curl) are burning tokens
-- **Predictive Burn Rate** — Projects your end-of-day total based on current pace
-- **91-day Usage Heatmap** — GitHub-style contribution grid of your token history
-- **Token Efficiency Score** — Rates how efficiently you're prompting (Verbose / Balanced / Tight / Ultra-efficient)
+**Proxy**
+- **Transparent streaming proxy** — every method and path is forwarded to Ollama and streamed back chunk by chunk, so clients see tokens as they are generated. Upstream status codes are preserved.
+- **Native and OpenAI-compatible token counting** — reads `prompt_eval_count` / `eval_count` from `/api/generate` and `/api/chat`, and `usage` from `/v1/chat/completions` (SSE or JSON).
+- **Token Budget Enforcer** — set a daily cap; *Warn* mode changes the menu bar colour, *Block* mode answers generation requests with HTTP 429 while model listing and pulling keep working.
+- **Latency and speed** — each request records wall-clock time and output tokens per second.
+
+**Insights**
+- **Overview** — today's total with input/output split, change versus yesterday, cost estimate, burn rate, projected end-of-day total, efficiency score, and average speed.
+- **14-day trend** — stacked input/output chart.
+- **Breakdown by model or client app** for Today, 7 days, 30 days, or all time. Detects Cursor, Open WebUI, Cline, Continue, Zed, Aider, Raycast, the Ollama CLI, OpenAI SDKs, curl, Python, Node and more.
+- **91-day heatmap** with active days, streak, and peak day.
+- **Activity feed** — the last 60 requests with model, app, endpoint, tokens, duration, and tok/s.
+
+**Ollama**
+- **Health monitor** — online/offline status and version, refreshed every 20 seconds.
+- **Loaded models** — what is resident in memory, GPU share, size, when it unloads, and a one-click **Unload**.
+- **Installed models** — every model on disk with size, parameters, quantisation, and all-time tokens.
+
+**App**
+- Launch at login, budget notifications at 80% and 100%, CSV/JSON export, and settings that apply without relaunching.
 
 ## Installation
 1. Download the [latest release](https://github.com/hansraj316/OllamaBar/releases) (OllamaBar.zip)
@@ -39,7 +52,16 @@ Change your Ollama client's API URL to the OllamaBar proxy port:
 - **Direct Ollama:** `http://127.0.0.1:11434`
 - **OllamaBar Proxy:** `http://127.0.0.1:11435`
 
-Works with Cursor, Open-WebUI, Cline, curl, or any HTTP client.
+Works with Cursor, Open-WebUI, Cline, curl, or any HTTP client. The proxy also passes through the OpenAI-compatible API, so point an OpenAI SDK at `http://127.0.0.1:11435/v1`.
+
+```bash
+# Native API
+curl http://127.0.0.1:11435/api/chat -d '{"model":"llama3.2","messages":[{"role":"user","content":"hi"}]}'
+
+# OpenAI-compatible API (counted too)
+curl http://127.0.0.1:11435/v1/chat/completions \
+  -d '{"model":"llama3.2","messages":[{"role":"user","content":"hi"}],"stream":true,"stream_options":{"include_usage":true}}'
+```
 
 ## Development
 

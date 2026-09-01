@@ -76,6 +76,55 @@ final class ProxyServerTests: XCTestCase {
         let (_, response) = try await session.data(for: req)
         XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 429)
     }
+    func test_getRequestsPassThroughWithUpstreamStatus() async throws {
+        let mockBody = #"{"models":[{"name":"llama3.2:latest"}]}"#
+        let mockServer = MockHTTPServer(port: 19437, responseBody: mockBody)
+        try await mockServer.startAndWaitReady()
+        defer { mockServer.stop() }
+
+        let proxy = ProxyServer(port: 19438, targetURL: URL(string: "http://127.0.0.1:19437")!)
+        // Hard budget already blown: management endpoints must still work.
+        proxy.budgetSnapshot = BudgetSnapshot(dailyBudgetTokens: 10, todayTotalTokens: 10, budgetMode: .hard)
+        try await proxy.startAndWaitReady()
+        defer { proxy.stop() }
+
+        let (data, response) = try await session.data(from: URL(string: "http://127.0.0.1:19438/api/tags")!)
+        XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 200)
+        XCTAssertEqual(String(data: data, encoding: .utf8), mockBody)
+    }
+
+    func test_unreachableUpstream_returns502() async throws {
+        let proxy = ProxyServer(port: 19439, targetURL: URL(string: "http://127.0.0.1:19440")!)
+        try await proxy.startAndWaitReady()
+        defer { proxy.stop() }
+
+        var req = URLRequest(url: URL(string: "http://127.0.0.1:19439/api/generate")!)
+        req.httpMethod = "POST"
+        req.httpBody = "{}".data(using: .utf8)
+        let (_, response) = try await session.data(for: req)
+        XCTAssertEqual((response as? HTTPURLResponse)?.statusCode, 502)
+    }
+
+    func test_recordCarriesDuration() async throws {
+        let mockBody = #"{"model":"m","done":true,"prompt_eval_count":1,"eval_count":2}"#
+        let mockServer = MockHTTPServer(port: 19441, responseBody: mockBody)
+        try await mockServer.startAndWaitReady()
+        defer { mockServer.stop() }
+
+        let proxy = ProxyServer(port: 19442, targetURL: URL(string: "http://127.0.0.1:19441")!)
+        var receivedRecord: UsageRecord?
+        proxy.onRecord = { receivedRecord = $0 }
+        try await proxy.startAndWaitReady()
+        defer { proxy.stop() }
+
+        var req = URLRequest(url: URL(string: "http://127.0.0.1:19442/api/chat")!)
+        req.httpMethod = "POST"
+        req.httpBody = "{}".data(using: .utf8)
+        _ = try await session.data(for: req)
+        try await Task.sleep(nanoseconds: 200_000_000)
+        XCTAssertNotNil(receivedRecord?.durationMs)
+        XCTAssertEqual(receivedRecord?.endpoint, "/api/chat")
+    }
 }
 
 // MARK: - ProxyServer async start helper
