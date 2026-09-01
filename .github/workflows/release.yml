@@ -6,6 +6,14 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release, e.g. v3.0.0 (created on this commit if it does not exist)"
+        required: true
+        type: string
+
+env:
+  RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 
 permissions:
   contents: write
@@ -40,7 +48,7 @@ jobs:
       - name: Extract release notes from CHANGELOG
         id: notes
         run: |
-          TAG="${GITHUB_REF_NAME#v}"
+          TAG="${RELEASE_TAG#v}"
           awk -v ver="$TAG" '
             /^## / { if (found) exit; if (index($0, "## " ver) == 1) { found = 1; next } }
             found { print }
@@ -54,7 +62,8 @@ jobs:
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: OllamaBar ${{ github.ref_name }}
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: OllamaBar ${{ env.RELEASE_TAG }}
           body_path: notes.md
           files: |
             OllamaBar.zip
