@@ -2,6 +2,7 @@ import AppKit
 import Foundation
 import Observation
 import ServiceManagement
+import SwiftUI
 import UniformTypeIdentifiers
 
 @Observable
@@ -50,6 +51,7 @@ final class AppViewModel {
     static let defaultTargetURL = URL(string: "http://localhost:11434")!
 
     private let notifier = BudgetNotifier()
+    @ObservationIgnored private lazy var gaugeStrip = GaugeStripController()
 
     var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev"
@@ -74,6 +76,7 @@ final class AppViewModel {
         refreshLaunchAtLogin()
         setupAndStartProxy(proxy)
         monitor.startPolling()
+        syncEdgeGauges()
     }
 
     private func setupAndStartProxy(_ proxy: ProxyServer) {
@@ -136,6 +139,48 @@ final class AppViewModel {
         isBudgetExceeded = budget > 0 && today >= budget
         notifier.update(isWarning: isBudgetWarning, isExceeded: isBudgetExceeded,
                         enabled: s.notifyOnBudget, todayTokens: today, budget: budget)
+        syncEdgeGauges()
+    }
+
+    // MARK: - Edge gauges
+
+    /// Rings for the floating edge strip: today's budget (or pace when no budget is set),
+    /// then each of the top three apps' share of today's tokens.
+    var edgeGauges: [EdgeGauge] {
+        let store = usageStore
+        var gauges: [EdgeGauge] = []
+
+        if let fraction = budgetFraction {
+            gauges.append(EdgeGauge(
+                id: "budget", fraction: fraction, color: Theme.usageColor(fraction),
+                symbol: "waveform.path.ecg", initial: nil, label: Format.percent(fraction),
+                help: "\(Format.compact(store.todayTotalTokens)) of \(Format.compact(settingsStore.settings.dailyBudgetTokens)) daily budget"))
+        } else {
+            let projected = store.projectedDayTotal ?? 0
+            let pace = projected > 0 ? min(1, Double(store.todayTotalTokens) / Double(projected)) : 0
+            gauges.append(EdgeGauge(
+                id: "pace", fraction: pace, color: Theme.mint,
+                symbol: "waveform.path.ecg", initial: nil, label: Format.compact(store.todayTotalTokens),
+                help: projected > 0 ? "Tokens today, on pace for \(Format.compact(projected))" : "Tokens today"))
+        }
+
+        let total = max(1, store.todayTotalTokens)
+        for (index, row) in store.breakdownByApp(in: .today).prefix(3).enumerated() {
+            let share = Double(row.tokens.total) / Double(total)
+            gauges.append(EdgeGauge(
+                id: "app-\(row.name)", fraction: share, color: Theme.shareColor(index),
+                symbol: nil, initial: String(row.name.prefix(1)).uppercased(), label: Format.percent(share),
+                help: "\(row.name): \(Format.compact(row.tokens.total)) tokens today"))
+        }
+        return gauges
+    }
+
+    func syncEdgeGauges() {
+        if settingsStore.settings.showEdgeGauges {
+            gaugeStrip.show(viewModel: self)
+        } else {
+            gaugeStrip.hide()
+        }
     }
 
     /// Fraction of today's budget consumed, clamped to 0...1. `nil` when no budget is set.

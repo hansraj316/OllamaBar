@@ -196,4 +196,17 @@ final class UsageStoreTests: XCTestCase {
         XCTAssertEqual(sut.usageStreakDays, 2)
         XCTAssertEqual(UsageStore(records: []).usageStreakDays, 0)
     }
+
+    // MARK: - Hourly
+
+    func test_lastHourAndPeakHour() {
+        let now = Date()
+        let sut = UsageStore(records: [
+            UsageRecord(timestamp: now.addingTimeInterval(-600), model: "m", clientApp: "a", endpoint: "/api/chat", promptTokens: 10, evalTokens: 20),
+            UsageRecord(timestamp: now.addingTimeInterval(-7200), model: "m", clientApp: "a", endpoint: "/api/chat", promptTokens: 100, evalTokens: 200)
+        ])
+        XCTAssertEqual(sut.lastHourTokens, 30)
+        XCTAssertEqual(sut.tokens(since: now.addingTimeInterval(-10_800)), 330)
+        XCTAssertGreaterThanOrEqual(sut.peakHourTokensToday, 30)
+    }
 }

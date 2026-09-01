@@ -89,6 +89,13 @@ struct SettingsView: View {
                         .toggleStyle(.switch)
                         .controlSize(.mini)
                         .font(.system(size: 11.5))
+                    Toggle("Edge gauges: floating rings at the screen edge", isOn: $store.settings.showEdgeGauges)
+                        .toggleStyle(.switch)
+                        .controlSize(.mini)
+                        .font(.system(size: 11.5))
+                    Text("Rings show today's budget and each app's share of today's tokens. Drag the strip to move it.")
+                        .font(.system(size: 10))
+                        .foregroundStyle(.tertiary)
                 }
 
                 SettingsSection("Data") {

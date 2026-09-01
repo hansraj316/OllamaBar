@@ -11,13 +11,14 @@ struct Settings: Codable, Equatable {
     var costPer1kOutputTokens: Double = 0.0
     var notifyOnBudget: Bool = false
     var showTokensInMenuBar: Bool = true
+    var showEdgeGauges: Bool = false
 
     init() {}
 
     private enum CodingKeys: String, CodingKey {
         case proxyPort, targetURL, dailyBudgetTokens, budgetMode
         case costPer1kInputTokens, costPer1kOutputTokens
-        case notifyOnBudget, showTokensInMenuBar
+        case notifyOnBudget, showTokensInMenuBar, showEdgeGauges
     }
 
     /// Tolerant decoding: settings files written by older versions lack the newer keys,
@@ -33,5 +34,6 @@ struct Settings: Codable, Equatable {
         costPer1kOutputTokens = try c.decodeIfPresent(Double.self,     forKey: .costPer1kOutputTokens) ?? d.costPer1kOutputTokens
         notifyOnBudget        = try c.decodeIfPresent(Bool.self,       forKey: .notifyOnBudget)        ?? d.notifyOnBudget
         showTokensInMenuBar   = try c.decodeIfPresent(Bool.self,       forKey: .showTokensInMenuBar)   ?? d.showTokensInMenuBar
+        showEdgeGauges        = try c.decodeIfPresent(Bool.self,       forKey: .showEdgeGauges)        ?? d.showEdgeGauges
     }
 }

@@ -32,12 +32,14 @@ final class ModelDecodingTests: XCTestCase {
         XCTAssertEqual(settings.dailyBudgetTokens, 500)
         XCTAssertFalse(settings.notifyOnBudget)
         XCTAssertTrue(settings.showTokensInMenuBar)
+        XCTAssertFalse(settings.showEdgeGauges)
     }
 
     func test_settings_roundTripsNewKeys() throws {
         var settings = Settings()
         settings.notifyOnBudget = true
         settings.showTokensInMenuBar = false
+        settings.showEdgeGauges = true
         let data = try JSONEncoder().encode(settings)
         XCTAssertEqual(try JSONDecoder().decode(Settings.self, from: data), settings)
     }

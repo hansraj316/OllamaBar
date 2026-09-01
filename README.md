@@ -35,6 +35,7 @@ OllamaBar is a critical observability pillar of the **Indian Avengers** organiza
 - **Installed models** — every model on disk with size, parameters, quantisation, and all-time tokens.
 
 **App**
+- **Edge gauges** — optional floating strip pinned to the screen edge with ring gauges for today's budget and each app's share of today's tokens (Settings → General).
 - Launch at login, budget notifications at 80% and 100%, CSV/JSON export, and settings that apply without relaunching.
 
 ## Installation

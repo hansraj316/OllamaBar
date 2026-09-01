@@ -50,6 +50,8 @@ Three core layers owned by `AppViewModel` (`@Observable @MainActor`):
 - `MenuBarPopover` — header, tab bar, footer; hosts `OverviewTab`, `ModelsTab`, `ActivityTab`, `SettingsView`
 - `Theme` — colour tokens (`input` indigo, `output` teal, status hues), `.card()` modifier, `SectionLabel`, `StatusPill`, `Chip`, `StatTile`, `Format` helpers
 - `TrendChartView` uses Swift Charts; `HeatmapView` uses `Canvas`
+- `GaugeStripView` / `GaugeStripController` — optional floating `NSPanel` (borderless, non-activating, `.floating` level) pinned to the right screen edge showing `AppViewModel.edgeGauges` rings; toggled by `Settings.showEdgeGauges`
+- The popover is always dark (`Theme.ink` + `.preferredColorScheme(.dark)`); usage bars and rings move mint → lime → hot via `Theme.usageColor`
 
 ## Key Design Decisions
 

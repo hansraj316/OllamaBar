@@ -20,59 +20,106 @@ private struct HeroCard: View {
 
     var body: some View {
         let store = vm.usageStore
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 8) {
-                SectionLabel("Today")
+        let midnight = Calendar.current.startOfDay(for: Date()).addingTimeInterval(86_400)
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Image(systemName: "waveform.path.ecg")
+                    .font(.system(size: 13, weight: .bold))
+                Text("Usage today")
+                    .font(.system(size: 15, weight: .semibold))
                 Spacer()
-                if let delta = store.todayVersusYesterday {
-                    HStack(spacing: 3) {
-                        Image(systemName: delta >= 0 ? "arrow.up.right" : "arrow.down.right")
-                            .font(.system(size: 9, weight: .bold))
-                        Text("\(Format.percent(abs(delta))) vs yesterday")
-                    }
-                    .font(.system(size: 10.5, weight: .medium))
-                    .foregroundStyle(.secondary)
-                }
-                Text("\(store.todayRequestCount) requests")
-                    .font(.system(size: 10.5, weight: .medium))
-                    .monospacedDigit()
-                    .foregroundStyle(.secondary)
-            }
-
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text(store.todayTotalTokens.formatted())
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
                     .monospacedDigit()
                     .contentTransition(.numericText())
                 Text("tokens")
-                    .font(.system(size: 13))
+                    .font(.system(size: 11))
                     .foregroundStyle(.secondary)
-                Spacer()
-                if let cost = vm.todayCost {
-                    Text(Format.cost(cost))
-                        .font(.system(size: 16, weight: .semibold, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundStyle(.secondary)
-                }
-            }
-
-            SplitBar(prompt: store.todayPromptTokens, eval: store.todayEvalTokens)
-
-            HStack(spacing: 14) {
-                LegendDot(color: Theme.input, label: "Input", value: store.todayPromptTokens)
-                LegendDot(color: Theme.output, label: "Output", value: store.todayEvalTokens)
-                Spacer()
-                Text("All time \(Format.compact(store.allTimeTotalTokens))")
-                    .font(.system(size: 10.5))
-                    .monospacedDigit()
-                    .foregroundStyle(.tertiary)
             }
 
             if let fraction = vm.budgetFraction {
-                BudgetRow(fraction: fraction)
+                let budget = vm.settingsStore.settings.dailyBudgetTokens
+                UsageRow(
+                    title: "Daily budget",
+                    trailing: "Resets at \(midnight, format: .dateTime.hour().minute())",
+                    fraction: fraction,
+                    color: Theme.usageColor(fraction),
+                    caption: "\(Format.percent(fraction)) used · \(Format.compact(store.todayTotalTokens)) of \(Format.compact(budget))"
+                        + (vm.settingsStore.settings.budgetMode == .hard ? " · blocks when full" : "")
+                )
+            } else {
+                let projected = store.projectedDayTotal ?? 0
+                let pace = projected > 0 ? min(1, Double(store.todayTotalTokens) / Double(projected)) : 0
+                UsageRow(
+                    title: "Pace",
+                    trailing: "Resets at \(midnight, format: .dateTime.hour().minute())",
+                    fraction: pace,
+                    color: Theme.mint,
+                    caption: projected > 0
+                        ? "On track for ~\(Format.compact(projected)) today · no budget set"
+                        : "No budget set · add one in Settings to see headroom"
+                )
+            }
+
+            let peak = max(1, store.peakHourTokensToday)
+            UsageRow(
+                title: "Last hour",
+                trailing: "Rolling 60 min",
+                fraction: min(1, Double(store.lastHourTokens) / Double(peak)),
+                color: Theme.input,
+                caption: "\(Format.compact(store.lastHourTokens)) tokens"
+                    + (store.averageTokensPerSecond.map { " · \(Format.rate($0))" } ?? "")
+                    + (store.todayVersusYesterday.map { " · \($0 >= 0 ? "up" : "down") \(Format.percent(abs($0))) vs yesterday" } ?? "")
+            )
+
+            VStack(alignment: .leading, spacing: 6) {
+                SplitBar(prompt: store.todayPromptTokens, eval: store.todayEvalTokens)
+                HStack(spacing: 14) {
+                    LegendDot(color: Theme.input, label: "Input", value: store.todayPromptTokens)
+                    LegendDot(color: Theme.output, label: "Output", value: store.todayEvalTokens)
+                    Spacer()
+                    Text("\(store.todayRequestCount) requests")
+                        .font(.system(size: 10.5))
+                        .monospacedDigit()
+                        .foregroundStyle(.tertiary)
+                }
             }
         }
-        .card()
+        .card(padding: 16)
+    }
+}
+
+/// One labelled bar: title and reset note above, thin bar, caption below.
+struct UsageRow: View {
+    let title: String
+    let trailing: LocalizedStringKey
+    let fraction: Double
+    let color: Color
+    let caption: String
+
+    init(title: String, trailing: LocalizedStringKey, fraction: Double, color: Color, caption: String) {
+        self.title = title; self.trailing = trailing; self.fraction = fraction
+        self.color = color; self.caption = caption
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(title).font(.system(size: 12, weight: .medium))
+                Spacer()
+                Text(trailing).font(.system(size: 10.5)).foregroundStyle(.secondary)
+            }
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Theme.track)
+                    Capsule().fill(color)
+                        .frame(width: max(fraction > 0 ? 6 : 0, geo.size.width * min(1, fraction)))
+                }
+            }
+            .frame(height: 6)
+            .animation(.snappy(duration: 0.35), value: fraction)
+            Text(caption).font(.system(size: 11)).foregroundStyle(.secondary).lineLimit(1)
+        }
     }
 }
 
@@ -109,42 +156,6 @@ private struct LegendDot: View {
             Text(value.formatted()).fontWeight(.medium).monospacedDigit()
         }
         .font(.system(size: 11))
-    }
-}
-
-private struct BudgetRow: View {
-    @Environment(AppViewModel.self) var vm
-    let fraction: Double
-
-    var body: some View {
-        let settings = vm.settingsStore.settings
-        VStack(alignment: .leading, spacing: 5) {
-            HStack(spacing: 6) {
-                Text("Budget")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(.secondary)
-                Chip(text: settings.budgetMode == .hard ? "BLOCKS" : "WARNS", tint: .secondary)
-                Spacer()
-                Text("\(Format.percent(fraction)) of \(Format.compact(settings.dailyBudgetTokens))")
-                    .font(.system(size: 11, weight: .medium))
-                    .monospacedDigit()
-                    .foregroundStyle(color)
-            }
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(Theme.track)
-                    Capsule().fill(color).frame(width: geo.size.width * fraction)
-                }
-            }
-            .frame(height: 6)
-        }
-        .padding(.top, 2)
-    }
-
-    private var color: Color {
-        if vm.isBudgetExceeded { return Theme.danger }
-        if vm.isBudgetWarning { return Theme.warning }
-        return Theme.input
     }
 }
 

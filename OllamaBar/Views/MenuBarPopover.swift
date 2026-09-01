@@ -14,7 +14,8 @@ struct MenuBarPopover: View {
             FooterView()
         }
         .frame(width: 380, height: 660)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(Theme.ink)
+        .preferredColorScheme(.dark)
         .task { await vm.monitor.refresh() }
     }
 

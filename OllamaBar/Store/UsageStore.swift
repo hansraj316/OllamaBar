@@ -47,6 +47,24 @@ final class UsageStore {
             .reduce(0) { $0 + $1.totalTokens }
     }
 
+    /// Tokens used since an arbitrary point in time.
+    func tokens(since date: Date) -> Int {
+        records.filter { $0.timestamp >= date }.reduce(0) { $0 + $1.totalTokens }
+    }
+
+    /// Rolling last 60 minutes.
+    var lastHourTokens: Int { tokens(since: Date().addingTimeInterval(-3600)) }
+
+    /// Busiest clock hour so far today, used to scale the "last hour" bar.
+    var peakHourTokensToday: Int {
+        let cal = Calendar.current
+        var buckets: [Int: Int] = [:]
+        for r in todayRecords {
+            buckets[cal.component(.hour, from: r.timestamp), default: 0] += r.totalTokens
+        }
+        return buckets.values.max() ?? 0
+    }
+
     // MARK: - Today
     var todayRecords: [UsageRecord] {
         let today = Calendar.current.startOfDay(for: Date())

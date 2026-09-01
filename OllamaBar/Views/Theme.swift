@@ -1,18 +1,37 @@
 import SwiftUI
 
-/// Shared visual vocabulary for the popover: two data hues (input / output),
-/// three status hues, and a translucent card treatment that follows the system appearance.
+/// Shared visual vocabulary: an always-dark "ink" surface, two data hues
+/// (input / output), and three usage hues that a bar or ring moves through as
+/// it fills (mint → lime → hot).
 enum Theme {
+    static let ink     = Color(red: 0.04, green: 0.04, blue: 0.045)
     static let input   = Color(red: 0.42, green: 0.49, blue: 0.98)
     static let output  = Color(red: 0.15, green: 0.76, blue: 0.62)
-    static let warning = Color(red: 0.98, green: 0.70, blue: 0.18)
-    static let danger  = Color(red: 0.96, green: 0.35, blue: 0.35)
-    static let success = Color(red: 0.30, green: 0.78, blue: 0.45)
 
-    static let cardFill   = Color.primary.opacity(0.045)
-    static let cardStroke = Color.primary.opacity(0.07)
-    static let track      = Color.primary.opacity(0.08)
-    static let radius: CGFloat = 12
+    static let mint    = Color(red: 0.24, green: 0.88, blue: 0.52)
+    static let lime    = Color(red: 0.91, green: 1.00, blue: 0.23)
+    static let hot     = Color(red: 1.00, green: 0.25, blue: 0.06)
+
+    static let warning = lime
+    static let danger  = hot
+    static let success = mint
+
+    static let cardFill   = Color.white.opacity(0.07)
+    static let cardStroke = Color.white.opacity(0.08)
+    static let track      = Color.white.opacity(0.13)
+    static let radius: CGFloat = 14
+
+    /// Colour for a usage fraction: calm while there is headroom, hot when it is nearly gone.
+    static func usageColor(_ fraction: Double) -> Color {
+        if fraction >= 0.8 { return hot }
+        if fraction >= 0.5 { return lime }
+        return mint
+    }
+
+    /// Distinct hue for the n-th ring / share in a small set.
+    static func shareColor(_ index: Int) -> Color {
+        [hot, mint, lime, input, output][index % 5]
+    }
 
     static var heroGradient: LinearGradient {
         LinearGradient(colors: [input, output], startPoint: .topLeading, endPoint: .bottomTrailing)
