@@ -3,6 +3,7 @@ import Network
 
 final class ProxyServer {
     var onRecord: ((UsageRecord) -> Void)?
+    var onBlocked: (() -> Void)?
     var onError: ((ProxyError) -> Void)?
     var onReady: (() -> Void)?
     var budgetSnapshot = BudgetSnapshot(dailyBudgetTokens: 0, todayTotalTokens: 0, budgetMode: .soft)
@@ -18,6 +19,11 @@ final class ProxyServer {
     init(port: Int = 11435, targetURL: URL = URL(string: "http://127.0.0.1:11434")!) {
         self.port = NWEndpoint.Port(integerLiteral: NWEndpoint.Port.IntegerLiteralType(port))
         self.targetURL = targetURL
+    }
+
+    /// Requests currently in flight through the proxy.
+    var activeConnectionCount: Int {
+        connectionsLock.withLock { activeConnections.count }
     }
 
     func start() throws {
@@ -39,14 +45,14 @@ final class ProxyServer {
                 connection: conn,
                 targetURL: self.targetURL,
                 budgetSnapshot: self.budgetSnapshot,
-                onRecord: self.onRecord
+                onRecord: self.onRecord,
+                onBlocked: self.onBlocked
             )
             let key = ObjectIdentifier(connection)
             self.connectionsLock.withLock { self.activeConnections[key] = connection }
-            connection.onDone = { [weak self, weak connection] in
-                guard let self, let connection else { return }
-                let k = ObjectIdentifier(connection)
-                self.connectionsLock.withLock { self.activeConnections.removeValue(forKey: k) }
+            connection.onDone = { [weak self] in
+                guard let self else { return }
+                self.connectionsLock.withLock { _ = self.activeConnections.removeValue(forKey: key) }
             }
             connection.start()
         }

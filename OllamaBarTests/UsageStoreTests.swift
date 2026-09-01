@@ -95,4 +95,118 @@ final class UsageStoreTests: XCTestCase {
         let sut = UsageStore(records: [makeRecord(prompt: 10, eval: 20, daysAgo: 92)])
         XCTAssertTrue(sut.heatmapData.isEmpty)
     }
+
+    // MARK: - Ranges and trend
+
+    func test_usageInRange_filtersByStartDate() {
+        let sut = UsageStore(records: [
+            makeRecord(prompt: 1, eval: 1),
+            makeRecord(prompt: 2, eval: 2, daysAgo: 3),
+            makeRecord(prompt: 4, eval: 4, daysAgo: 10),
+            makeRecord(prompt: 8, eval: 8, daysAgo: 40)
+        ])
+        XCTAssertEqual(sut.totalTokens(in: .today), 2)
+        XCTAssertEqual(sut.totalTokens(in: .week), 6)
+        XCTAssertEqual(sut.totalTokens(in: .month), 14)
+        XCTAssertEqual(sut.totalTokens(in: .all), 30)
+    }
+
+    func test_breakdownInRange_onlyCountsRecordsInside() {
+        let sut = UsageStore(records: [
+            makeRecord(model: "old", prompt: 100, eval: 100, daysAgo: 20),
+            makeRecord(model: "new", prompt: 1, eval: 1)
+        ])
+        XCTAssertEqual(sut.breakdownByModel(in: .today).map(\.name), ["new"])
+        XCTAssertEqual(sut.breakdownByModel(in: .all).map(\.name), ["old", "new"])
+    }
+
+    func test_dailyTotals_zeroFillsAndOrdersOldestFirst() {
+        let sut = UsageStore(records: [
+            makeRecord(prompt: 10, eval: 5),
+            makeRecord(prompt: 1, eval: 2, daysAgo: 2)
+        ])
+        let totals = sut.dailyTotals(days: 7)
+        XCTAssertEqual(totals.count, 7)
+        XCTAssertEqual(totals.last?.total, 15)
+        XCTAssertEqual(totals[4].total, 3)
+        XCTAssertEqual(totals[4].prompt, 1)
+        XCTAssertEqual(totals[0].total, 0)
+        XCTAssertTrue(zip(totals, totals.dropFirst()).allSatisfy { $0.date < $1.date })
+    }
+
+    func test_todayVersusYesterday() {
+        let sut = UsageStore(records: [
+            makeRecord(prompt: 100, eval: 100, daysAgo: 1),
+            makeRecord(prompt: 200, eval: 100)
+        ])
+        XCTAssertEqual(sut.yesterdayTotalTokens, 200)
+        XCTAssertEqual(sut.todayVersusYesterday!, 0.5, accuracy: 0.001)
+        XCTAssertNil(UsageStore(records: [makeRecord(prompt: 1, eval: 1)]).todayVersusYesterday)
+    }
+
+    // MARK: - Activity
+
+    func test_recentRecords_newestFirstAndLimited() {
+        let records = (0..<5).map { i in
+            UsageRecord(timestamp: Date(timeIntervalSinceNow: Double(i)), model: "m\(i)",
+                        clientApp: "curl", endpoint: "/api/chat", promptTokens: 1, evalTokens: 1)
+        }
+        let sut = UsageStore(records: records)
+        XCTAssertEqual(sut.recentRecords(limit: 3).map(\.model), ["m4", "m3", "m2"])
+    }
+
+    func test_averageSpeedAndLatency_ignoreRecordsWithoutDuration() {
+        let sut = UsageStore(records: [
+            UsageRecord(model: "a", clientApp: "x", endpoint: "/api/chat", promptTokens: 1, evalTokens: 100, durationMs: 1000),
+            UsageRecord(model: "a", clientApp: "x", endpoint: "/api/chat", promptTokens: 1, evalTokens: 50, durationMs: 2000),
+            UsageRecord(model: "a", clientApp: "x", endpoint: "/api/chat", promptTokens: 1, evalTokens: 999)
+        ])
+        XCTAssertEqual(sut.averageTokensPerSecond!, 62.5, accuracy: 0.001)
+        XCTAssertEqual(sut.averageLatencyMs, 1500)
+        XCTAssertNil(UsageStore(records: []).averageTokensPerSecond)
+    }
+
+    func test_tokensByNormalizedModel_mergesLatestTag() {
+        let sut = UsageStore(records: [
+            makeRecord(model: "llama3.2", prompt: 1, eval: 1),
+            makeRecord(model: "llama3.2:latest", prompt: 2, eval: 2)
+        ])
+        XCTAssertEqual(sut.tokensByNormalizedModel["llama3.2"], 6)
+    }
+
+    // MARK: - Heatmap stats
+
+    func test_activeDaysPeakAndStreak() {
+        let sut = UsageStore(records: [
+            makeRecord(prompt: 10, eval: 10),
+            makeRecord(prompt: 50, eval: 50, daysAgo: 1),
+            makeRecord(prompt: 5, eval: 5, daysAgo: 2),
+            makeRecord(prompt: 5, eval: 5, daysAgo: 5)
+        ])
+        XCTAssertEqual(sut.activeDayCount, 4)
+        XCTAssertEqual(sut.peakDayTokens, 100)
+        XCTAssertEqual(sut.usageStreakDays, 3)
+    }
+
+    func test_streak_countsFromYesterdayWhenTodayIsQuiet() {
+        let sut = UsageStore(records: [
+            makeRecord(prompt: 1, eval: 1, daysAgo: 1),
+            makeRecord(prompt: 1, eval: 1, daysAgo: 2)
+        ])
+        XCTAssertEqual(sut.usageStreakDays, 2)
+        XCTAssertEqual(UsageStore(records: []).usageStreakDays, 0)
+    }
+
+    // MARK: - Hourly
+
+    func test_lastHourAndPeakHour() {
+        let now = Date()
+        let sut = UsageStore(records: [
+            UsageRecord(timestamp: now.addingTimeInterval(-600), model: "m", clientApp: "a", endpoint: "/api/chat", promptTokens: 10, evalTokens: 20),
+            UsageRecord(timestamp: now.addingTimeInterval(-7200), model: "m", clientApp: "a", endpoint: "/api/chat", promptTokens: 100, evalTokens: 200)
+        ])
+        XCTAssertEqual(sut.lastHourTokens, 30)
+        XCTAssertEqual(sut.tokens(since: now.addingTimeInterval(-10_800)), 330)
+        XCTAssertGreaterThanOrEqual(sut.peakHourTokensToday, 30)
+    }
 }
