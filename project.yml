@@ -18,11 +18,11 @@ targets:
       - path: OllamaBar
         excludes:
           - "**/*.entitlements"
-      - path: OllamaBar/Assets.xcassets
-        type: folder
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: "3.0.0"
+        CURRENT_PROJECT_VERSION: "1"
         PRODUCT_BUNDLE_IDENTIFIER: com.ollamabar.OllamaBar
         INFOPLIST_FILE: OllamaBar/Info.plist
         GENERATE_INFOPLIST_FILE: YES
