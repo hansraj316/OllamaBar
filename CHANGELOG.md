@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.1 — 2026-09-02
+
+Build fixes. No functional changes.
+
+### Fixed
+- The app icon is now compiled into the bundle. `project.yml` listed the asset catalog twice and the second entry pointed outside the repo, so every previous build shipped with a generic Finder icon.
+- The app reports its version again. `CFBundleShortVersionString` and `CFBundleVersion` were dropped from the generated Info.plist because no marketing or build version was set.
+- The committed Xcode project is in sync with the sources. It referenced only 17 of the 29 Swift files and did not build without `xcodegen generate`.
+
+### Housekeeping
+- `build/`, the derived-data path used by CI and local builds, is ignored by git.
+
 ## 3.0.0 — 2026-09-01
 
 The proxy became a real streaming proxy, the popover became a four-tab app, and the whole thing got a new look.
