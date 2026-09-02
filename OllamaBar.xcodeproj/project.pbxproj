@@ -7,32 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03D34B704167CC073152093B /* UsageExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763B0467BA5D93616B72D107 /* UsageExporterTests.swift */; };
 		0A23CF23053C78D5BB648247 /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DCA030ACCDCE4DC26750F02 /* PersistenceManager.swift */; };
+		1A1ADEB58943E4C494BB827A /* ModelDecodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791C0FE2B82AE099D3EAFB29 /* ModelDecodingTests.swift */; };
 		1B8D8CD2CB7FFE7BA4A93B44 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D954CA29378CCC81D46FC2 /* SettingsView.swift */; };
 		1E7F9FDBE5822BC5E1F70578 /* OllamaBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 983ABCCB1BD095FD21A52434 /* OllamaBarApp.swift */; };
 		20C67158214E4E324B0F1769 /* MenuBarIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C523EA5F58726CE3E4403B57 /* MenuBarIconView.swift */; };
 		2276EA853966CD7FB0782BF3 /* BudgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E7D79818158095EFC03461 /* BudgetSnapshot.swift */; };
+		268DF720720C413CECFB4369 /* GaugeStrip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59896E3C84A915242E4D6EF /* GaugeStrip.swift */; };
 		2A36B789425E2C787008338A /* NDJSONParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114FCA7AFCCDB5D14B60E5F7 /* NDJSONParserTests.swift */; };
 		36BF8AFD521C2D2DFA9C4D7E /* TokenPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C76F6DBC1351FA77ED2453E /* TokenPair.swift */; };
 		36C1D5B979B6F8232798E8FB /* OllamaBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */; };
+		3D4F48F3A8888C64FC6EE436 /* UsageExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381E45666D9B86FDF7A5B009 /* UsageExporter.swift */; };
 		4749A7635E2325913E5EDB69 /* HeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 494B04944B714C2EE6C96E3A /* HeatmapView.swift */; };
 		503B962268FE6D9A0077B957 /* BreakdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32C6111C41AC5B48A339950 /* BreakdownView.swift */; };
 		52E48B9E2097DF0552B82C10 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CB72AFF0EB66915A3C7AD8 /* SettingsStoreTests.swift */; };
+		5BCADEABDD43B66E32DF6855 /* BudgetNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF3E4900BA521B8B8821D16 /* BudgetNotifier.swift */; };
+		5EE2F2C6B7559D788AB73D64 /* GaugeStripController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A906119D138B29039B27A230 /* GaugeStripController.swift */; };
 		5F2F02D80F97E76D7E0EEA45 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB444A0945A6BB757CBFE342 /* SettingsStore.swift */; };
 		626603FCFC0A302A59822EDA /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D574AB0BC06398CA3CA4EB56 /* AppViewModel.swift */; };
 		6E9288AE3AECED5C5F964878 /* ProxyServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 346990679B2F7BF5905F058A /* ProxyServer.swift */; };
+		781196C9F7F825C37C86E3ED /* UsageRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55DFF103DE6BB324188B0C7 /* UsageRange.swift */; };
 		845150D55FF581721DF6886C /* UsageRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD19E9BA0A568DB74531607C /* UsageRecord.swift */; };
-		894AE515614D72E8E4FFDC18 /* BurnRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E762F1A81F5FC96D810314 /* BurnRateView.swift */; };
 		8CC91DD0A7749BABEB6BC234 /* PersistenceManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDBC7B742E3D3F3B9E92A6D /* PersistenceManagerTests.swift */; };
+		947F29F25016D8A18ADF3147 /* TrendChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2FA46143FAC51B15B31A33 /* TrendChartView.swift */; };
+		953F9F0186B14A773CFE7FC3 /* ModelsTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98165DFE65E4ED36E3A3858 /* ModelsTab.swift */; };
+		9BFD23423986315DD8FF24C1 /* OllamaModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577BAE47312DAC975234A24D /* OllamaModels.swift */; };
 		9E9FDE9EB9D6FEC015D43F3A /* ProxyConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D48B8D2F6406525C10FC20A /* ProxyConnection.swift */; };
+		A8805DB39753AF4097C3259D /* BudgetPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7955313703A28CA6D218F882 /* BudgetPolicyTests.swift */; };
 		AF2BC450F512F48D42F548FC /* MenuBarPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43743F5BDFA0824282084FBE /* MenuBarPopover.swift */; };
 		B1B1F26E6969EB31FB1C4A83 /* UsageStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576DA9BAE75A00430835821C /* UsageStoreTests.swift */; };
 		B91BC120B07B6D64C3FCC9EF /* ProxyServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F438A81D7A5DF2165AC4298C /* ProxyServerTests.swift */; };
 		BC46828391AB185CA492821D /* UsageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31226696FE1FF4CAA05CB042 /* UsageStore.swift */; };
+		BDFCD3797A07FDCB86392E52 /* ActivityTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4666C15C61AA523C548E647 /* ActivityTab.swift */; };
+		C5B176E288F6B47BE0C397D6 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C5DDA5765926CE20784E41 /* Theme.swift */; };
+		D246EA0DCDCD82733FB8105E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC78908D1D627E7C95BD338 /* Assets.xcassets */; };
 		DAB601114E050F9E41D4CCD1 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D558FD8CC97B7E11502890C5 /* Settings.swift */; };
-		E3773CAFA874DE5EDFA2619E /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3271830360ECA2DE3CDABE /* StatsView.swift */; };
-		EAD6BED3EEF6607B9A23D328 /* EfficiencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2562565C5A9C6914DBA528B9 /* EfficiencyView.swift */; };
 		EFB2318A919F4F6F2452C713 /* NDJSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92933156460136F8D1ECA5B7 /* NDJSONParser.swift */; };
+		F4990E79081198094489C763 /* OllamaMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06077C3D24835518EBB81833 /* OllamaMonitor.swift */; };
+		F4F6EA94F3C5C49DCF1016E2 /* OverviewTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B0FB00634014629B97C246 /* OverviewTab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,34 +59,47 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06077C3D24835518EBB81833 /* OllamaMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaMonitor.swift; sourceTree = "<group>"; };
 		0EDBC7B742E3D3F3B9E92A6D /* PersistenceManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManagerTests.swift; sourceTree = "<group>"; };
 		114FCA7AFCCDB5D14B60E5F7 /* NDJSONParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NDJSONParserTests.swift; sourceTree = "<group>"; };
-		16E762F1A81F5FC96D810314 /* BurnRateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BurnRateView.swift; sourceTree = "<group>"; };
 		1DCA030ACCDCE4DC26750F02 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
-		2562565C5A9C6914DBA528B9 /* EfficiencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EfficiencyView.swift; sourceTree = "<group>"; };
 		31226696FE1FF4CAA05CB042 /* UsageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStore.swift; sourceTree = "<group>"; };
 		346990679B2F7BF5905F058A /* ProxyServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyServer.swift; sourceTree = "<group>"; };
+		37C5DDA5765926CE20784E41 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		381E45666D9B86FDF7A5B009 /* UsageExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageExporter.swift; sourceTree = "<group>"; };
 		43743F5BDFA0824282084FBE /* MenuBarPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopover.swift; sourceTree = "<group>"; };
 		48330667067ACDF724D33ECB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		48B0FB00634014629B97C246 /* OverviewTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewTab.swift; sourceTree = "<group>"; };
 		494B04944B714C2EE6C96E3A /* HeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapView.swift; sourceTree = "<group>"; };
-		4F3271830360ECA2DE3CDABE /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
 		576DA9BAE75A00430835821C /* UsageStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStoreTests.swift; sourceTree = "<group>"; };
+		577BAE47312DAC975234A24D /* OllamaModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaModels.swift; sourceTree = "<group>"; };
 		64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaBarTests.swift; sourceTree = "<group>"; };
+		6EF3E4900BA521B8B8821D16 /* BudgetNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetNotifier.swift; sourceTree = "<group>"; };
+		763B0467BA5D93616B72D107 /* UsageExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageExporterTests.swift; sourceTree = "<group>"; };
 		77D954CA29378CCC81D46FC2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		791C0FE2B82AE099D3EAFB29 /* ModelDecodingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDecodingTests.swift; sourceTree = "<group>"; };
+		7955313703A28CA6D218F882 /* BudgetPolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetPolicyTests.swift; sourceTree = "<group>"; };
+		7B2FA46143FAC51B15B31A33 /* TrendChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendChartView.swift; sourceTree = "<group>"; };
 		7D48B8D2F6406525C10FC20A /* ProxyConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyConnection.swift; sourceTree = "<group>"; };
+		7EC78908D1D627E7C95BD338 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C76F6DBC1351FA77ED2453E /* TokenPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPair.swift; sourceTree = "<group>"; };
 		92933156460136F8D1ECA5B7 /* NDJSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NDJSONParser.swift; sourceTree = "<group>"; };
 		983ABCCB1BD095FD21A52434 /* OllamaBarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OllamaBarApp.swift; sourceTree = "<group>"; };
 		A5169FFC4681B9D5F5C39B45 /* OllamaBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OllamaBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A59896E3C84A915242E4D6EF /* GaugeStrip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeStrip.swift; sourceTree = "<group>"; };
+		A906119D138B29039B27A230 /* GaugeStripController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeStripController.swift; sourceTree = "<group>"; };
 		AB444A0945A6BB757CBFE342 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		B55DFF103DE6BB324188B0C7 /* UsageRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageRange.swift; sourceTree = "<group>"; };
 		BD19E9BA0A568DB74531607C /* UsageRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageRecord.swift; sourceTree = "<group>"; };
 		C0E7D79818158095EFC03461 /* BudgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetSnapshot.swift; sourceTree = "<group>"; };
+		C4666C15C61AA523C548E647 /* ActivityTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTab.swift; sourceTree = "<group>"; };
 		C523EA5F58726CE3E4403B57 /* MenuBarIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarIconView.swift; sourceTree = "<group>"; };
 		C8CB72AFF0EB66915A3C7AD8 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
 		D32C6111C41AC5B48A339950 /* BreakdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakdownView.swift; sourceTree = "<group>"; };
 		D558FD8CC97B7E11502890C5 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D574AB0BC06398CA3CA4EB56 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		F438A81D7A5DF2165AC4298C /* ProxyServerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyServerTests.swift; sourceTree = "<group>"; };
+		F98165DFE65E4ED36E3A3858 /* ModelsTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTab.swift; sourceTree = "<group>"; };
 		FFDEC127D21B62A1D80FEBB0 /* OllamaBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OllamaBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -81,11 +107,14 @@
 		2F4BD81CE3959BD1320E840D /* OllamaBarTests */ = {
 			isa = PBXGroup;
 			children = (
+				7955313703A28CA6D218F882 /* BudgetPolicyTests.swift */,
+				791C0FE2B82AE099D3EAFB29 /* ModelDecodingTests.swift */,
 				114FCA7AFCCDB5D14B60E5F7 /* NDJSONParserTests.swift */,
 				64AB686C43F1D2C2A90FAD2F /* OllamaBarTests.swift */,
 				0EDBC7B742E3D3F3B9E92A6D /* PersistenceManagerTests.swift */,
 				F438A81D7A5DF2165AC4298C /* ProxyServerTests.swift */,
 				C8CB72AFF0EB66915A3C7AD8 /* SettingsStoreTests.swift */,
+				763B0467BA5D93616B72D107 /* UsageExporterTests.swift */,
 				576DA9BAE75A00430835821C /* UsageStoreTests.swift */,
 			);
 			path = OllamaBarTests;
@@ -105,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				D574AB0BC06398CA3CA4EB56 /* AppViewModel.swift */,
+				7EC78908D1D627E7C95BD338 /* Assets.xcassets */,
 				48330667067ACDF724D33ECB /* Info.plist */,
 				983ABCCB1BD095FD21A52434 /* OllamaBarApp.swift */,
 				CB207BD16185926866A5A57C /* Models */,
@@ -118,14 +148,18 @@
 		ADEF3F0F123F0C89F0A0C024 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C4666C15C61AA523C548E647 /* ActivityTab.swift */,
 				D32C6111C41AC5B48A339950 /* BreakdownView.swift */,
-				16E762F1A81F5FC96D810314 /* BurnRateView.swift */,
-				2562565C5A9C6914DBA528B9 /* EfficiencyView.swift */,
+				A59896E3C84A915242E4D6EF /* GaugeStrip.swift */,
+				A906119D138B29039B27A230 /* GaugeStripController.swift */,
 				494B04944B714C2EE6C96E3A /* HeatmapView.swift */,
 				C523EA5F58726CE3E4403B57 /* MenuBarIconView.swift */,
 				43743F5BDFA0824282084FBE /* MenuBarPopover.swift */,
+				F98165DFE65E4ED36E3A3858 /* ModelsTab.swift */,
+				48B0FB00634014629B97C246 /* OverviewTab.swift */,
 				77D954CA29378CCC81D46FC2 /* SettingsView.swift */,
-				4F3271830360ECA2DE3CDABE /* StatsView.swift */,
+				37C5DDA5765926CE20784E41 /* Theme.swift */,
+				7B2FA46143FAC51B15B31A33 /* TrendChartView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -143,8 +177,10 @@
 			isa = PBXGroup;
 			children = (
 				C0E7D79818158095EFC03461 /* BudgetSnapshot.swift */,
+				577BAE47312DAC975234A24D /* OllamaModels.swift */,
 				D558FD8CC97B7E11502890C5 /* Settings.swift */,
 				8C76F6DBC1351FA77ED2453E /* TokenPair.swift */,
+				B55DFF103DE6BB324188B0C7 /* UsageRange.swift */,
 				BD19E9BA0A568DB74531607C /* UsageRecord.swift */,
 			);
 			path = Models;
@@ -162,8 +198,11 @@
 		F7FC38A38035B943726FFDEE /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				6EF3E4900BA521B8B8821D16 /* BudgetNotifier.swift */,
+				06077C3D24835518EBB81833 /* OllamaMonitor.swift */,
 				1DCA030ACCDCE4DC26750F02 /* PersistenceManager.swift */,
 				AB444A0945A6BB757CBFE342 /* SettingsStore.swift */,
+				381E45666D9B86FDF7A5B009 /* UsageExporter.swift */,
 				31226696FE1FF4CAA05CB042 /* UsageStore.swift */,
 			);
 			path = Store;
@@ -177,6 +216,7 @@
 			buildConfigurationList = E8C174664499C353D3DDD0DA /* Build configuration list for PBXNativeTarget "OllamaBar" */;
 			buildPhases = (
 				CDAABE5F0849A67B789BEA7E /* Sources */,
+				07DFFBF25FA17F38C5188860 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -242,16 +282,30 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		07DFFBF25FA17F38C5188860 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D246EA0DCDCD82733FB8105E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6BFC12C38DE25D8B9C674972 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8805DB39753AF4097C3259D /* BudgetPolicyTests.swift in Sources */,
+				1A1ADEB58943E4C494BB827A /* ModelDecodingTests.swift in Sources */,
 				2A36B789425E2C787008338A /* NDJSONParserTests.swift in Sources */,
 				36C1D5B979B6F8232798E8FB /* OllamaBarTests.swift in Sources */,
 				8CC91DD0A7749BABEB6BC234 /* PersistenceManagerTests.swift in Sources */,
 				B91BC120B07B6D64C3FCC9EF /* ProxyServerTests.swift in Sources */,
 				52E48B9E2097DF0552B82C10 /* SettingsStoreTests.swift in Sources */,
+				03D34B704167CC073152093B /* UsageExporterTests.swift in Sources */,
 				B1B1F26E6969EB31FB1C4A83 /* UsageStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,24 +314,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFCD3797A07FDCB86392E52 /* ActivityTab.swift in Sources */,
 				626603FCFC0A302A59822EDA /* AppViewModel.swift in Sources */,
 				503B962268FE6D9A0077B957 /* BreakdownView.swift in Sources */,
+				5BCADEABDD43B66E32DF6855 /* BudgetNotifier.swift in Sources */,
 				2276EA853966CD7FB0782BF3 /* BudgetSnapshot.swift in Sources */,
-				894AE515614D72E8E4FFDC18 /* BurnRateView.swift in Sources */,
-				EAD6BED3EEF6607B9A23D328 /* EfficiencyView.swift in Sources */,
+				268DF720720C413CECFB4369 /* GaugeStrip.swift in Sources */,
+				5EE2F2C6B7559D788AB73D64 /* GaugeStripController.swift in Sources */,
 				4749A7635E2325913E5EDB69 /* HeatmapView.swift in Sources */,
 				20C67158214E4E324B0F1769 /* MenuBarIconView.swift in Sources */,
 				AF2BC450F512F48D42F548FC /* MenuBarPopover.swift in Sources */,
+				953F9F0186B14A773CFE7FC3 /* ModelsTab.swift in Sources */,
 				EFB2318A919F4F6F2452C713 /* NDJSONParser.swift in Sources */,
 				1E7F9FDBE5822BC5E1F70578 /* OllamaBarApp.swift in Sources */,
+				9BFD23423986315DD8FF24C1 /* OllamaModels.swift in Sources */,
+				F4990E79081198094489C763 /* OllamaMonitor.swift in Sources */,
+				F4F6EA94F3C5C49DCF1016E2 /* OverviewTab.swift in Sources */,
 				0A23CF23053C78D5BB648247 /* PersistenceManager.swift in Sources */,
 				9E9FDE9EB9D6FEC015D43F3A /* ProxyConnection.swift in Sources */,
 				6E9288AE3AECED5C5F964878 /* ProxyServer.swift in Sources */,
 				DAB601114E050F9E41D4CCD1 /* Settings.swift in Sources */,
 				5F2F02D80F97E76D7E0EEA45 /* SettingsStore.swift in Sources */,
 				1B8D8CD2CB7FFE7BA4A93B44 /* SettingsView.swift in Sources */,
-				E3773CAFA874DE5EDFA2619E /* StatsView.swift in Sources */,
+				C5B176E288F6B47BE0C397D6 /* Theme.swift in Sources */,
 				36BF8AFD521C2D2DFA9C4D7E /* TokenPair.swift in Sources */,
+				947F29F25016D8A18ADF3147 /* TrendChartView.swift in Sources */,
+				3D4F48F3A8888C64FC6EE436 /* UsageExporter.swift in Sources */,
+				781196C9F7F825C37C86E3ED /* UsageRange.swift in Sources */,
 				845150D55FF581721DF6886C /* UsageRecord.swift in Sources */,
 				BC46828391AB185CA492821D /* UsageStore.swift in Sources */,
 			);
@@ -417,9 +480,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -436,20 +501,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_ALLOWED = YES;
 				CODE_SIGN_ENTITLEMENTS = OllamaBar/OllamaBar.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OllamaBar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ollamabar.OllamaBar;
 				SDKROOT = macosx;
 			};
@@ -459,20 +528,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_ALLOWED = YES;
 				CODE_SIGN_ENTITLEMENTS = OllamaBar/OllamaBar.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = NO;
+				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OllamaBar/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 3.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ollamabar.OllamaBar;
 				SDKROOT = macosx;
 			};
@@ -482,9 +555,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGNING_REQUIRED = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
