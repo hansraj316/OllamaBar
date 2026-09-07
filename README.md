@@ -7,7 +7,9 @@
 [![Indian Avengers](https://img.shields.io/badge/Managed%20By-Indian%20Avengers-orange?style=flat-square&logo=gitbook)](https://github.com/hansraj316/mission-control-openclaw)
 [![Status](https://img.shields.io/badge/Status-Sentinel%20Audited-green?style=flat-square)](https://github.com/hansraj316/OllamaBar)
 
-![OllamaBar Screenshot](screenshot.png)
+<p align="center">
+  <img src="docs/screenshots/overview.png" alt="OllamaBar Overview tab" width="380">
+</p>
 
 ## How it works
 
@@ -27,7 +29,23 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 - **Edge gauges.** An optional floating strip on the screen edge with ring gauges for your budget and each app's share of today's tokens.
 - **Ink look.** Always-dark surface, one bright accent per bar with a "resets at" note, rings and bars that turn from mint to lime to hot as usage fills.
 
-Full list in [CHANGELOG.md](CHANGELOG.md).
+**3.0.1** fixes the packaging: the app icon is compiled into the bundle, the version string is back in the Info.plist, and the committed Xcode project matches the sources. Full history in [CHANGELOG.md](CHANGELOG.md).
+
+## Screens
+
+| Models | Activity | Settings |
+|---|---|---|
+| <img src="docs/screenshots/models.png" alt="Models tab" width="250"> | <img src="docs/screenshots/activity.png" alt="Activity tab" width="250"> | <img src="docs/screenshots/settings.png" alt="Settings tab" width="250"> |
+
+**Edge gauges** — an optional floating strip on the screen edge, showing the daily budget and each app's share of today's tokens.
+
+<img src="docs/screenshots/edge-gauges.png" alt="Edge gauges floating strip" width="700">
+
+**Menu bar** — the glyph and colour change with proxy and budget state.
+
+<img src="docs/screenshots/menu-bar.png" alt="Menu bar states" width="620">
+
+<sub>Rendered from the interface design. The numbers shown are sample data.</sub>
 
 ## Features
 
@@ -58,15 +76,22 @@ Full list in [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
 
-1. Download `OllamaBar.zip` from the [latest release](https://github.com/hansraj316/OllamaBar/releases/latest).
-2. Unzip and move `OllamaBar.app` to `/Applications`.
-3. The app is ad-hoc signed, not notarised, so macOS will refuse to open it once. Clear the quarantine flag:
-   ```bash
-   xattr -cr /Applications/OllamaBar.app
-   ```
-4. Open `OllamaBar.app`. A waveform icon appears in the menu bar.
+Download **[OllamaBar.zip from v3.0.1](https://github.com/hansraj316/OllamaBar/releases/tag/v3.0.1)** (the [latest release](https://github.com/hansraj316/OllamaBar/releases/latest) is always current).
 
-Requires macOS 14 or later and a running Ollama (`ollama serve`).
+```bash
+# 1. Unzip and install
+unzip ~/Downloads/OllamaBar.zip -d /Applications
+
+# 2. Clear the quarantine flag (the build is ad-hoc signed, not notarised)
+xattr -cr /Applications/OllamaBar.app
+
+# 3. Launch
+open /Applications/OllamaBar.app
+```
+
+A waveform icon appears in the menu bar. Requires macOS 14 or later and a running Ollama (`ollama serve`).
+
+Prefer to build it yourself? See [Development](#development) — it is one `xcodegen generate` and one `xcodebuild` away.
 
 ## Usage
 
