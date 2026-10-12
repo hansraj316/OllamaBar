@@ -1,9 +1,12 @@
 # Changelog
 
-## Unreleased
+## 3.1.0 — 2026-10-12
+
+Every API Ollama speaks is now counted, and the speed numbers are honest.
 
 ### Fixed
 - **Claude Code and other Anthropic-API clients are counted correctly.** Requests to Ollama's Anthropic-compatible `/v1/messages` endpoint were recorded as zero-token requests from an "unknown" model, because any `usage` object locked in a 0/0 record even when it used Anthropic's field names. Both the JSON body and the streamed `message_start` / `message_delta` events are now parsed, `/v1/messages` counts toward hard budgets, and Claude Code and the Anthropic SDKs are labelled by name.
+- **Embeddings are counted.** `/api/embed` answers without the `done` flag the parser keyed on, so embedding requests never produced a record. They now count their input tokens (embedding models generate no output) and their load time. OpenAI-compatible `/v1/embeddings` was already counted and is now covered by tests. The deprecated `/api/embeddings` returns no token counts, so it still can't be tracked.
 
 ### Added
 - **True generation speed.** Tokens per second now comes from Ollama's own `eval_duration` timer on native API responses, so model loading and prompt processing no longer drag the number down. OpenAI- and Anthropic-compatible responses, which carry no timers, still fall back to wall-clock time.

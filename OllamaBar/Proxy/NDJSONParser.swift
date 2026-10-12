@@ -20,6 +20,8 @@ struct ParsedTokens {
 ///   `prompt_eval_count`, `eval_count`, `prompt_eval_cached_count` and nanosecond timings.
 /// - OpenAI-compatible (`/v1/chat/completions` …): NDJSON or SSE `data:` lines where the
 ///   final chunk carries `usage.prompt_tokens` / `usage.completion_tokens`.
+/// - Native embeddings (`/api/embed`): a single JSON body with `embeddings`, `prompt_eval_count`
+///   and `load_duration`, but no `done` flag and no output count.
 /// - Anthropic-compatible (`/v1/messages`): a single JSON body with `usage.input_tokens` /
 ///   `usage.output_tokens`, or an SSE stream where `message_start` carries the input count
 ///   and `message_delta` the cumulative output count.
@@ -112,9 +114,12 @@ final class NDJSONParser {
         let evalDuration: Int?
         let usage: Usage?
         let message: Message?
+        /// The body carries an `embeddings` array. Only its presence matters, so the
+        /// (potentially large) vectors are never decoded.
+        let hasEmbeddings: Bool
 
         private enum CodingKeys: String, CodingKey {
-            case done, type, model, usage, message
+            case done, type, model, usage, message, embeddings
             case promptEvalCount = "prompt_eval_count"
             case promptEvalCachedCount = "prompt_eval_cached_count"
             case evalCount = "eval_count"
@@ -136,6 +141,7 @@ final class NDJSONParser {
             evalDuration = c.lenient(Int.self, .evalDuration)
             usage = c.lenient(Usage.self, .usage)
             message = c.lenient(Message.self, .message)
+            hasEmbeddings = c.contains(.embeddings)
         }
     }
 
@@ -178,6 +184,17 @@ final class NDJSONParser {
             loadNs = chunk.loadDuration
             promptEvalNs = chunk.promptEvalDuration
             evalNs = chunk.evalDuration
+            complete = true
+            return
+        }
+
+        // `/api/embed` answers in one body with no `done` flag. Embedding models read input
+        // but generate nothing, so output is zero. Without a count there is nothing to record.
+        if chunk.hasEmbeddings, let count = chunk.promptEvalCount {
+            if let name = chunk.model { model = name }
+            prompt = count
+            eval = 0
+            loadNs = chunk.loadDuration
             complete = true
             return
         }

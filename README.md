@@ -23,6 +23,13 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
                                   └─ counts tokens, latency, budget
 ```
 
+## What's new in 3.1
+
+- **Claude Code is counted.** Requests through Ollama's Anthropic-compatible `/v1/messages` endpoint used to be logged as zero tokens. They now get real counts and the right model, and Claude Code is labelled by name.
+- **Embeddings are counted.** `/api/embed` requests now record their input tokens.
+- **Real speed.** Tok/s comes from Ollama's own generation timer, so a cold model load no longer makes a fast model look slow.
+- **Cold loads and cache hits.** See which requests waited for a model to load from disk, and how much of your prompt Ollama served from cache.
+
 ## What's new in 3.0
 
 - **Real streaming proxy.** Tokens reach your client as Ollama produces them. Every method and path passes through, including the OpenAI-compatible `/v1` API, so model pickers and pulls keep working.
@@ -33,7 +40,7 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 
 **Coming from 1.x?** The Python proxy is gone. Everything, proxy included, is native Swift now, and usage is stored in `~/Library/Application Support/OllamaBar/`. History from the 1.x file at `~/.ollama/ollamabar_usage.json` is not imported.
 
-**3.0.1** fixes the packaging: the app icon is compiled into the bundle, the version string is back in the Info.plist, and the committed Xcode project matches the sources. Full history in [CHANGELOG.md](CHANGELOG.md).
+**3.0.1** fixed the packaging: the app icon is compiled into the bundle, the version string is back in the Info.plist, and the committed Xcode project matches the sources. Full history in [CHANGELOG.md](CHANGELOG.md).
 
 ## Screens
 
@@ -55,7 +62,7 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 
 **Proxy**
 - Transparent streaming proxy, any method and path, upstream status codes preserved.
-- Token counting across all three APIs Ollama speaks: native `/api/generate` and `/api/chat`, OpenAI-compatible `/v1/chat/completions`, and Anthropic-compatible `/v1/messages`, so Claude Code pointed at Ollama is counted too.
+- Token counting across every API Ollama speaks: native `/api/generate`, `/api/chat` and `/api/embed`, OpenAI-compatible `/v1/chat/completions` and `/v1/embeddings`, and Anthropic-compatible `/v1/messages`, so Claude Code pointed at Ollama is counted too.
 - True generation speed from Ollama's own timer, so model loading doesn't drag tok/s down, plus per-request latency.
 - Cold-load detection: see which requests waited for a model to load from disk, and how long.
 - Prompt cache hit rate: how much of your prompt Ollama served from cache instead of re-processing.
@@ -82,7 +89,7 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 
 ## Installation
 
-Download **[OllamaBar.zip from v3.0.1](https://github.com/hansraj316/OllamaBar/releases/tag/v3.0.1)** (the [latest release](https://github.com/hansraj316/OllamaBar/releases/latest) is always current).
+Download **[OllamaBar.zip from v3.1.0](https://github.com/hansraj316/OllamaBar/releases/tag/v3.1.0)** (the [latest release](https://github.com/hansraj316/OllamaBar/releases/latest) is always current).
 
 ```bash
 # 1. Unzip and install
@@ -154,9 +161,11 @@ Architecture notes live in [CLAUDE.md](CLAUDE.md).
 Push a version tag and the [Release workflow](.github/workflows/release.yml) builds the app on a macOS runner, ad-hoc signs it, zips it, and publishes a GitHub Release with the matching `CHANGELOG.md` section as notes.
 
 ```bash
-git tag v3.0.0
-git push origin v3.0.0
+git tag v3.1.0
+git push origin v3.1.0
 ```
+
+Or run the **Release** workflow from the Actions tab with the tag name as input; it creates the tag on the commit it runs from.
 
 ## The Mission
 
