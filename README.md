@@ -1,6 +1,6 @@
 # OllamaBar
 
-> A macOS menu bar app that watches your local Ollama: live token counts, budgets, model status, and a floating gauge strip. It sits between your tools and Ollama as a transparent streaming proxy.
+> A native Swift menu bar app for macOS that watches your local Ollama: live token counts, budgets, model status, and a floating gauge strip. It sits between your tools and Ollama as a transparent streaming proxy, built into the app. No Python, no runtime, nothing else to install.
 
 [![Swift](https://github.com/hansraj316/OllamaBar/actions/workflows/swift.yml/badge.svg)](https://github.com/hansraj316/OllamaBar/actions/workflows/swift.yml)
 [![Release](https://img.shields.io/github/v/release/hansraj316/OllamaBar?style=flat-square)](https://github.com/hansraj316/OllamaBar/releases/latest)
@@ -15,6 +15,8 @@
 
 Point any Ollama client at `http://127.0.0.1:11435` instead of `11434`. OllamaBar forwards each request to Ollama unchanged, streams the answer back as it is generated, and reads the token counts off the final chunk. Nothing leaves your machine.
 
+The proxy is written in Swift on Apple's Network.framework (`NWListener`) and runs inside the app process. It starts when the app launches and stops when you quit.
+
 ```
 Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
                                   │
@@ -28,6 +30,8 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 - **Models tab.** See what is loaded in memory, how much sits on the GPU, when it unloads, and evict it with one click.
 - **Edge gauges.** An optional floating strip on the screen edge with ring gauges for your budget and each app's share of today's tokens.
 - **Ink look.** Always-dark surface, one bright accent per bar with a "resets at" note, rings and bars that turn from mint to lime to hot as usage fills.
+
+**Coming from 1.x?** The Python proxy is gone. Everything, proxy included, is native Swift now, and usage is stored in `~/Library/Application Support/OllamaBar/`. History from the 1.x file at `~/.ollama/ollamabar_usage.json` is not imported.
 
 **3.0.1** fixes the packaging: the app icon is compiled into the bundle, the version string is back in the Info.plist, and the committed Xcode project matches the sources. Full history in [CHANGELOG.md](CHANGELOG.md).
 
@@ -69,7 +73,7 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 
 **Activity**
 - The last 60 requests with model, app, endpoint, tokens, duration, and tok/s.
-- Recognises Cursor, Open WebUI, Cline, Continue, Zed, Aider, Raycast, the Ollama CLI, OpenAI SDKs, curl, Python, Node, Go, and more.
+- Labels each request with the app that sent it: Cursor, Open WebUI, Cline, Continue, Zed, Aider, Raycast, the Ollama CLI, OpenAI SDKs, curl, and scripts in Python, Node, or Go.
 
 **App**
 - Edge gauges strip, launch at login, budget notifications at 80% and 100%, CSV/JSON export, settings that apply without relaunching.
@@ -117,6 +121,8 @@ curl http://127.0.0.1:11435/api/tags
 **Export.** Settings → Data → Export CSV or JSON. Usage lives in `~/Library/Application Support/OllamaBar/`.
 
 ## Development
+
+Built with Swift 5.9, SwiftUI, Swift Charts, Network.framework and the Observation framework. No third-party dependencies.
 
 Requirements: Xcode 16+, macOS 14+, [xcodegen](https://github.com/yonaskolb/XcodeGen).
 
