@@ -118,6 +118,129 @@ final class NDJSONParserTests: XCTestCase {
         XCTAssertNil(parser.finalize())
     }
 
+    // MARK: - Native timings and prompt cache
+
+    func test_native_capturesOllamaTimingsAndCachedCount() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"llama3.2","done":true,"done_reason":"stop","prompt_eval_count":120,"prompt_eval_cached_count":96,"eval_count":40,"total_duration":2600000000,"load_duration":2100000000,"prompt_eval_duration":130000000,"eval_duration":320000000}"#)
+        let result = parser.finalize()
+        XCTAssertEqual(result?.promptTokens, 120)
+        XCTAssertEqual(result?.evalTokens, 40)
+        XCTAssertEqual(result?.cachedPromptTokens, 96)
+        XCTAssertEqual(result?.loadDurationNs, 2_100_000_000)
+        XCTAssertEqual(result?.promptEvalDurationNs, 130_000_000)
+        XCTAssertEqual(result?.evalDurationNs, 320_000_000)
+    }
+
+    func test_native_olderOllamaWithoutTimingsLeavesThemNil() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"llama3.2","done":true,"prompt_eval_count":5,"eval_count":6}"#)
+        let result = parser.finalize()
+        XCTAssertNil(result?.cachedPromptTokens)
+        XCTAssertNil(result?.evalDurationNs)
+        XCTAssertNil(result?.loadDurationNs)
+    }
+
+    func test_native_chatDoneChunkWithMessageObjectStillParses() {
+        // /api/chat chunks carry a `message` object; it must not get in the way of the counts.
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"qwen3","message":{"role":"assistant","content":"","tool_calls":[{"function":{"name":"f","arguments":{}}}]},"done":true,"prompt_eval_count":30,"eval_count":12}"#)
+        XCTAssertEqual(parser.finalize()?.evalTokens, 12)
+    }
+
+    func test_unexpectedFieldTypesDoNotDiscardTheCounts() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"m","message":"not an object","usage":[1,2],"load_duration":"soon","done":true,"prompt_eval_count":3,"eval_count":4}"#)
+        let result = parser.finalize()
+        XCTAssertEqual(result?.promptTokens, 3)
+        XCTAssertEqual(result?.evalTokens, 4)
+        XCTAssertNil(result?.loadDurationNs)
+    }
+
+    func test_openAI_readsCachedTokensFromPromptDetails() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"data: {"model":"llama3.2","choices":[],"usage":{"prompt_tokens":200,"completion_tokens":20,"prompt_tokens_details":{"cached_tokens":150}}}"#)
+        let result = parser.finalize()
+        XCTAssertEqual(result?.promptTokens, 200)
+        XCTAssertEqual(result?.cachedPromptTokens, 150)
+    }
+
+    // MARK: - Anthropic-compatible (/v1/messages)
+
+    func test_anthropic_nonStreamingResponse() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"id":"msg_1","type":"message","role":"assistant","model":"qwen3-coder","content":[{"type":"text","text":"hi"}],"stop_reason":"end_turn","usage":{"input_tokens":25,"output_tokens":15}}"#)
+        let result = parser.finalize()
+        XCTAssertEqual(result?.model, "qwen3-coder")
+        XCTAssertEqual(result?.promptTokens, 25)
+        XCTAssertEqual(result?.evalTokens, 15)
+        XCTAssertNil(result?.cachedPromptTokens)
+    }
+
+    func test_anthropic_streamingTakesInputFromStartAndOutputFromLastDelta() {
+        let parser = NDJSONParser()
+        let stream = """
+        event: message_start
+        data: {"type":"message_start","message":{"id":"msg_1","type":"message","role":"assistant","model":"qwen3-coder","content":[],"usage":{"input_tokens":40,"output_tokens":1}}}
+
+        event: content_block_start
+        data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+        event: content_block_delta
+        data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello"}}
+
+        event: message_delta
+        data: {"type":"message_delta","delta":{"stop_reason":"end_turn"},"usage":{"output_tokens":27}}
+
+        event: message_stop
+        data: {"type":"message_stop"}
+
+        """
+        parser.ingest(data: Data(stream.utf8))
+        let result = parser.finalize()
+        XCTAssertEqual(result?.model, "qwen3-coder")
+        XCTAssertEqual(result?.promptTokens, 40)
+        XCTAssertEqual(result?.evalTokens, 27, "message_delta's cumulative count replaces the placeholder")
+    }
+
+    func test_anthropic_streamingSurvivesChunkBoundaries() {
+        let parser = NDJSONParser()
+        let stream = "data: {\"type\":\"message_start\",\"message\":{\"model\":\"m\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}}\n"
+            + "data: {\"type\":\"message_delta\",\"usage\":{\"output_tokens\":33}}\n"
+        let bytes = Array(stream.utf8)
+        for start in stride(from: 0, to: bytes.count, by: 7) {
+            parser.ingest(data: Data(bytes[start..<min(start + 7, bytes.count)]))
+        }
+        let result = parser.finalize()
+        XCTAssertEqual(result?.promptTokens, 9)
+        XCTAssertEqual(result?.evalTokens, 33)
+    }
+
+    func test_anthropic_foldsCacheReadsAndWritesIntoPromptTokens() {
+        // Anthropic reports cache tokens outside input_tokens; prompt tokens stay "total input".
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"type":"message","model":"m","usage":{"input_tokens":10,"cache_read_input_tokens":70,"cache_creation_input_tokens":20,"output_tokens":5}}"#)
+        let result = parser.finalize()
+        XCTAssertEqual(result?.promptTokens, 100)
+        XCTAssertEqual(result?.cachedPromptTokens, 70)
+    }
+
+    func test_usageWithoutRecognisedFieldsDoesNotRecordZeroTokens() {
+        // Regression: any `usage` object used to lock in a 0/0 record, so Anthropic-style
+        // responses were logged as zero-token requests from an "unknown" model.
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"m","usage":{}}"#)
+        parser.ingest(line: #"{"model":"m","usage":{"something_else":5}}"#)
+        XCTAssertNil(parser.finalize())
+    }
+
+    func test_responsesWithoutAnyCountsProduceNoRecord() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"models":[{"name":"llama3.2:latest"}]}"#)
+        parser.ingest(line: #"{"status":"pulling manifest"}"#)
+        XCTAssertNil(parser.finalize())
+    }
+
     // MARK: - Client detection
 
     func test_clientAppParser_recognizesCursor() {
@@ -144,6 +267,13 @@ final class NDJSONParserTests: XCTestCase {
         XCTAssertEqual(ClientAppParser.parse(userAgent: "OpenAI/Python 1.40.0"), "OpenAI SDK")
         XCTAssertEqual(ClientAppParser.parse(userAgent: "node-fetch/1.0"), "Node.js")
         XCTAssertEqual(ClientAppParser.parse(userAgent: "Go-http-client/1.1"), "Go")
+    }
+
+    func test_clientAppParser_recognizesClaudeCodeAndAnthropicSDK() {
+        XCTAssertEqual(ClientAppParser.parse(userAgent: "claude-cli/2.0.14 (external, cli)"), "Claude Code")
+        XCTAssertEqual(ClientAppParser.parse(userAgent: "Anthropic/Python 0.69.0"), "Anthropic SDK",
+                       "the SDK must win over the generic Python match")
+        XCTAssertEqual(ClientAppParser.parse(userAgent: "Anthropic/JS 0.65.0"), "Anthropic SDK")
     }
 
     func test_clientAppParser_returnsUnknownForUnrecognized() {

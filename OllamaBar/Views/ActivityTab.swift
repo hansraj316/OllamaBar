@@ -87,9 +87,19 @@ private struct ActivityRow: View {
                     Text(endpointLabel)
                     Text("·")
                     Text(record.timestamp, format: .dateTime.hour().minute())
+                    if record.isColdLoad, let loadMs = record.loadDurationMs {
+                        Text("·")
+                        Text("cold load \(Format.duration(ms: loadMs))")
+                            .foregroundStyle(Theme.warning)
+                    }
+                    if let hit = record.cacheHitRate, hit > 0 {
+                        Text("·")
+                        Text("\(Format.percent(hit)) cached")
+                    }
                 }
                 .font(.system(size: 10))
                 .foregroundStyle(.tertiary)
+                .lineLimit(1)
             }
 
             Spacer(minLength: 4)

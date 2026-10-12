@@ -125,6 +125,66 @@ final class ProxyServerTests: XCTestCase {
         XCTAssertNotNil(receivedRecord?.durationMs)
         XCTAssertEqual(receivedRecord?.endpoint, "/api/chat")
     }
+
+    func test_anthropicMessagesStream_isRecordedWithRealCounts() async throws {
+        let mockBody = """
+        event: message_start
+        data: {"type":"message_start","message":{"model":"qwen3-coder","usage":{"input_tokens":64,"output_tokens":1}}}
+
+        event: message_delta
+        data: {"type":"message_delta","delta":{"stop_reason":"end_turn"},"usage":{"output_tokens":21}}
+
+        event: message_stop
+        data: {"type":"message_stop"}
+        """
+        let mockServer = MockHTTPServer(port: 19443, responseBody: mockBody)
+        try await mockServer.startAndWaitReady()
+        defer { mockServer.stop() }
+
+        let proxy = ProxyServer(port: 19444, targetURL: URL(string: "http://127.0.0.1:19443")!)
+        var receivedRecord: UsageRecord?
+        proxy.onRecord = { receivedRecord = $0 }
+        try await proxy.startAndWaitReady()
+        defer { proxy.stop() }
+
+        var req = URLRequest(url: URL(string: "http://127.0.0.1:19444/v1/messages")!)
+        req.httpMethod = "POST"
+        req.httpBody = #"{"model":"qwen3-coder","max_tokens":64,"stream":true,"messages":[]}"#.data(using: .utf8)
+        req.setValue("claude-cli/2.0.14 (external, cli)", forHTTPHeaderField: "User-Agent")
+        _ = try await session.data(for: req)
+        try await Task.sleep(nanoseconds: 200_000_000)
+
+        XCTAssertEqual(receivedRecord?.model, "qwen3-coder")
+        XCTAssertEqual(receivedRecord?.promptTokens, 64)
+        XCTAssertEqual(receivedRecord?.evalTokens, 21)
+        XCTAssertEqual(receivedRecord?.clientApp, "Claude Code")
+        XCTAssertEqual(receivedRecord?.endpoint, "/v1/messages")
+    }
+
+    func test_nativeTimingsReachTheRecord() async throws {
+        let mockBody = #"{"model":"m","done":true,"prompt_eval_count":8,"prompt_eval_cached_count":6,"eval_count":30,"load_duration":1800000000,"eval_duration":600000000}"#
+        let mockServer = MockHTTPServer(port: 19445, responseBody: mockBody)
+        try await mockServer.startAndWaitReady()
+        defer { mockServer.stop() }
+
+        let proxy = ProxyServer(port: 19446, targetURL: URL(string: "http://127.0.0.1:19445")!)
+        var receivedRecord: UsageRecord?
+        proxy.onRecord = { receivedRecord = $0 }
+        try await proxy.startAndWaitReady()
+        defer { proxy.stop() }
+
+        var req = URLRequest(url: URL(string: "http://127.0.0.1:19446/api/generate")!)
+        req.httpMethod = "POST"
+        req.httpBody = "{}".data(using: .utf8)
+        _ = try await session.data(for: req)
+        try await Task.sleep(nanoseconds: 200_000_000)
+
+        XCTAssertEqual(receivedRecord?.cachedPromptTokens, 6)
+        XCTAssertEqual(receivedRecord?.loadDurationNs, 1_800_000_000)
+        XCTAssertEqual(receivedRecord?.evalDurationNs, 600_000_000)
+        XCTAssertEqual(receivedRecord?.tokensPerSecond ?? 0, 50, accuracy: 0.001)
+        XCTAssertEqual(receivedRecord?.isColdLoad, true)
+    }
 }
 
 // MARK: - ProxyServer async start helper

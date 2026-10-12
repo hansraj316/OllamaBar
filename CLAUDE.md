@@ -37,7 +37,7 @@ Three core layers owned by `AppViewModel` (`@Observable @MainActor`):
 **Proxy layer** (`OllamaBar/Proxy/`) — non-isolated (no `@MainActor`):
 - `ProxyServer` — `NWListener` on port 11435; creates `ProxyConnection` per request; exposes `onRecord`, `onBlocked`, `onReady`, `onError`
 - `ProxyConnection` — accumulates the HTTP request (any method/path), applies `BudgetPolicy`, forwards to Ollama through a `URLSession` with itself as `URLSessionDataDelegate`, and relays each received chunk to the client with `Transfer-Encoding: chunked` while feeding it to `NDJSONParser`. Records `durationMs`.
-- `NDJSONParser` — byte-buffering line parser; understands native `done:true` chunks (`prompt_eval_count` + `eval_count`) and OpenAI-compatible `usage` objects on plain or `data:`-prefixed SSE lines. `ClientAppParser` maps User-Agent strings to app names.
+- `NDJSONParser` — byte-buffering line parser for all three dialects: native `done:true` chunks (counts, `prompt_eval_cached_count`, and nanosecond `load_duration` / `prompt_eval_duration` / `eval_duration`), OpenAI `usage` (`prompt_tokens`, `completion_tokens`, `prompt_tokens_details.cached_tokens`), and Anthropic `/v1/messages` (`usage.input_tokens` / `output_tokens`, streamed across `message_start` and `message_delta`). All fields decode leniently so one odd field never drops a chunk's counts. `ClientAppParser` maps User-Agent strings to app names.
 
 **Store layer** (`OllamaBar/Store/`) — `@MainActor`:
 - `UsageStore` — append-only `[UsageRecord]`; computes all aggregates (totals, ranged breakdowns via `UsageRange`, daily totals, heatmap, streak, burn rate, efficiency, speed)
@@ -57,8 +57,11 @@ Three core layers owned by `AppViewModel` (`@Observable @MainActor`):
 
 - `ProxyServer` and `ProxyConnection` are **non-isolated** — `NWListener`/`NWConnection` callbacks fire on internal queues; `@MainActor` would cause Swift 6 strict-concurrency errors
 - `BudgetSnapshot` is a **value type** shared between `ProxyServer` (non-isolated) and `AppViewModel` (`@MainActor`) without actor hops — safe because it's a `struct` copy
-- `BudgetPolicy` only blocks **POST to generation endpoints** (`/api/generate`, `/api/chat`, `/api/embed*`, `/v1/*completions`, `/v1/embeddings`); `/api/tags`, `/api/ps`, pulls etc. always pass so clients keep working when a hard cap is hit
-- Token field names: `prompt_eval_count` and `eval_count` — same in both `/api/generate` and `/api/chat` `done:true` terminal chunks; OpenAI-compatible responses use `usage.prompt_tokens` / `usage.completion_tokens`
+- `BudgetPolicy` only blocks **POST to generation endpoints** (`/api/generate`, `/api/chat`, `/api/embed*`, `/v1/*completions`, `/v1/embeddings`, `/v1/messages`); `/api/tags`, `/api/ps`, pulls etc. always pass so clients keep working when a hard cap is hit
+- Token field names: `prompt_eval_count` and `eval_count` — same in both `/api/generate` and `/api/chat` `done:true` terminal chunks; OpenAI-compatible responses use `usage.prompt_tokens` / `usage.completion_tokens`; Anthropic-compatible use `usage.input_tokens` / `usage.output_tokens`
+- `UsageRecord.promptTokens` always means **total input**, cached included. Anthropic reports cache reads/writes outside `input_tokens`, so the parser folds them back in; `cachedPromptTokens` is a subset in every dialect
+- A `usage` object only produces a record if it carries recognised fields; an empty or foreign one must never lock in a zero-token record
+- `tokensPerSecond` prefers Ollama's `eval_duration` over wall-clock; `isColdLoad` means `load_duration` ≥ 0.5 s (`UsageRecord.coldLoadThresholdNs`)
 - `OllamaMonitor.unload` and health polling talk to Ollama **directly**, never through the proxy, so they are never counted as usage
 - `UNUserNotificationCenter` and `SMAppService` are only touched when `Bundle.main` is a real `.app` (guards keep unit tests and previews from crashing)
 - Heatmap uses **equal-range** color levels: `maxTokens/4` intervals, evaluated highest-to-lowest

@@ -209,4 +209,56 @@ final class UsageStoreTests: XCTestCase {
         XCTAssertEqual(sut.tokens(since: now.addingTimeInterval(-10_800)), 330)
         XCTAssertGreaterThanOrEqual(sut.peakHourTokensToday, 30)
     }
+
+    // MARK: - Prompt cache and model loads
+
+    private func timed(prompt: Int = 100, eval: Int = 10, cached: Int? = nil, loadNs: Int? = nil,
+                       evalNs: Int? = nil, daysAgo: Int = 0) -> UsageRecord {
+        let ts = Calendar.current.date(byAdding: .day, value: -daysAgo, to: Date())!
+        return UsageRecord(timestamp: ts, model: "m", clientApp: "a", endpoint: "/api/chat",
+                           promptTokens: prompt, evalTokens: eval, durationMs: 1000,
+                           cachedPromptTokens: cached, loadDurationNs: loadNs, evalDurationNs: evalNs)
+    }
+
+    func test_cacheHitRate_onlyCountsRequestsThatReportIt() {
+        let sut = UsageStore(records: [
+            timed(prompt: 100, cached: 80),
+            timed(prompt: 300, cached: 120),
+            timed(prompt: 5000, cached: nil),            // e.g. an older Ollama: not a miss
+            timed(prompt: 100, cached: 100, daysAgo: 1)  // yesterday
+        ])
+        XCTAssertEqual(sut.todayCacheHitRate!, 0.5, accuracy: 0.001)
+        XCTAssertEqual(sut.todayCachedPromptTokens, 200)
+    }
+
+    func test_cacheHitRate_nilWhenNothingReportsIt() {
+        XCTAssertNil(UsageStore(records: [timed(cached: nil)]).todayCacheHitRate)
+        XCTAssertNil(UsageStore(records: []).todayCacheHitRate)
+    }
+
+    func test_coldLoads_countAndTotalTime() {
+        let sut = UsageStore(records: [
+            timed(loadNs: 2_000_000_000),
+            timed(loadNs: 1_500_000_000),
+            timed(loadNs: 40_000_000),                       // warm
+            timed(loadNs: 3_000_000_000, daysAgo: 1)         // yesterday
+        ])
+        XCTAssertTrue(sut.todayHasLoadTimings)
+        XCTAssertEqual(sut.todayColdLoadCount, 2)
+        XCTAssertEqual(sut.todayColdLoadSeconds, 3.5, accuracy: 0.001)
+    }
+
+    func test_coldLoads_distinguishAllWarmFromNotMeasured() {
+        let warm = UsageStore(records: [timed(loadNs: 30_000_000)])
+        XCTAssertTrue(warm.todayHasLoadTimings)
+        XCTAssertEqual(warm.todayColdLoadCount, 0)
+        XCTAssertFalse(UsageStore(records: [timed(loadNs: nil)]).todayHasLoadTimings)
+    }
+
+    func test_averageSpeed_usesOllamaEvalTimerWhenPresent() {
+        // Wall-clock would say 10 tok/s; the eval timer says 100.
+        let sut = UsageStore(records: [timed(eval: 10, evalNs: 100_000_000)])
+        XCTAssertEqual(sut.averageTokensPerSecond!, 100, accuracy: 0.001)
+        XCTAssertTrue(sut.todayHasMeasuredSpeed)
+    }
 }
