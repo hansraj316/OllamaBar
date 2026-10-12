@@ -13,6 +13,7 @@ final class BudgetPolicyTests: XCTestCase {
         XCTAssertTrue(BudgetPolicy.shouldBlock(exceededHard, method: "POST", path: "/api/chat"))
         XCTAssertTrue(BudgetPolicy.shouldBlock(exceededHard, method: "post", path: "/v1/chat/completions"))
         XCTAssertTrue(BudgetPolicy.shouldBlock(exceededHard, method: "POST", path: "/api/embed?foo=bar"))
+        XCTAssertTrue(BudgetPolicy.shouldBlock(exceededHard, method: "POST", path: "/v1/messages"))
     }
 
     func test_neverBlocksManagementEndpoints() {

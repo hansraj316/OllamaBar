@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+- **Claude Code and other Anthropic-API clients are counted correctly.** Requests to Ollama's Anthropic-compatible `/v1/messages` endpoint were recorded as zero-token requests from an "unknown" model, because any `usage` object locked in a 0/0 record even when it used Anthropic's field names. Both the JSON body and the streamed `message_start` / `message_delta` events are now parsed, `/v1/messages` counts toward hard budgets, and Claude Code and the Anthropic SDKs are labelled by name.
+
+### Added
+- **True generation speed.** Tokens per second now comes from Ollama's own `eval_duration` timer on native API responses, so model loading and prompt processing no longer drag the number down. OpenAI- and Anthropic-compatible responses, which carry no timers, still fall back to wall-clock time.
+- **Cold loads.** Requests where Ollama had to load the model from disk (`load_duration` of 0.5 s or more) are flagged in Activity, and the Overview counts today's cold loads and the time spent on them.
+- **Prompt cache hits.** Reads `prompt_eval_cached_count` (native), `prompt_tokens_details.cached_tokens` (OpenAI) and `cache_read_input_tokens` (Anthropic). The Overview shows the share of today's prompt tokens served from cache, and each Activity row shows its own hit rate.
+- CSV export gains `cached_prompt_tokens`, `load_ms` and `eval_ms` columns.
+
 ## 3.0.1 — 2026-09-02
 
 Build fixes. No functional changes.

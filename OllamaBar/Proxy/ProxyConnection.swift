@@ -255,7 +255,11 @@ extension ProxyConnection: URLSessionDataDelegate {
                 endpoint: path,
                 promptTokens: tokens.promptTokens,
                 evalTokens: tokens.evalTokens,
-                durationMs: duration
+                durationMs: duration,
+                cachedPromptTokens: tokens.cachedPromptTokens,
+                loadDurationNs: tokens.loadDurationNs,
+                promptEvalDurationNs: tokens.promptEvalDurationNs,
+                evalDurationNs: tokens.evalDurationNs
             )
             let onRecord = self.onRecord
             DispatchQueue.main.async { onRecord?(record) }

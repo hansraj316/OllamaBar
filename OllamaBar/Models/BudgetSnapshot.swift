@@ -14,7 +14,8 @@ struct BudgetSnapshot {
 enum BudgetPolicy {
     static let meteredPaths: Set<String> = [
         "/api/generate", "/api/chat", "/api/embed", "/api/embeddings",
-        "/v1/chat/completions", "/v1/completions", "/v1/embeddings"
+        "/v1/chat/completions", "/v1/completions", "/v1/embeddings",
+        "/v1/messages"
     ]
 
     static func isMetered(method: String, path: String) -> Bool {

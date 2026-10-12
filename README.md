@@ -55,13 +55,15 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 
 **Proxy**
 - Transparent streaming proxy, any method and path, upstream status codes preserved.
-- Token counting from native `/api/generate` and `/api/chat` chunks and from OpenAI-compatible `usage` objects (SSE or JSON).
-- Per-request duration, tokens per second, and average latency.
+- Token counting across all three APIs Ollama speaks: native `/api/generate` and `/api/chat`, OpenAI-compatible `/v1/chat/completions`, and Anthropic-compatible `/v1/messages`, so Claude Code pointed at Ollama is counted too.
+- True generation speed from Ollama's own timer, so model loading doesn't drag tok/s down, plus per-request latency.
+- Cold-load detection: see which requests waited for a model to load from disk, and how long.
+- Prompt cache hit rate: how much of your prompt Ollama served from cache instead of re-processing.
 - Daily token budget. *Warn* changes the menu bar colour. *Block* answers generation requests with HTTP 429 while model listing and pulling keep working.
 
 **Overview**
 - Today's total with input/output split, change vs yesterday, requests, and optional cost estimate.
-- Daily budget bar with reset time, rolling last-hour bar, burn rate, projected end-of-day total, efficiency score, average speed.
+- Daily budget bar with reset time, rolling last-hour bar, burn rate, projected end-of-day total, efficiency score, generation speed, cache hit rate, and cold loads.
 - 14-day stacked trend chart.
 - Breakdown by model or client app for Today, 7 days, 30 days, or all time.
 - 91-day heatmap with active days, streak, and peak day.
@@ -72,8 +74,8 @@ Cursor / Open WebUI / curl ──▶ OllamaBar :11435 ──▶ Ollama :11434
 - Installed models with size, parameters, quantisation, and all-time tokens.
 
 **Activity**
-- The last 60 requests with model, app, endpoint, tokens, duration, and tok/s.
-- Labels each request with the app that sent it: Cursor, Open WebUI, Cline, Continue, Zed, Aider, Raycast, the Ollama CLI, OpenAI SDKs, curl, and scripts in Python, Node, or Go.
+- The last 60 requests with model, app, endpoint, tokens, duration, tok/s, cache hit rate, and a flag on cold loads.
+- Labels each request with the app that sent it: Cursor, Claude Code, Open WebUI, Cline, Continue, Zed, Aider, Raycast, the Ollama CLI, OpenAI and Anthropic SDKs, curl, and scripts in Python, Node, or Go.
 
 **App**
 - Edge gauges strip, launch at login, budget notifications at 80% and 100%, CSV/JSON export, settings that apply without relaunching.
@@ -105,6 +107,10 @@ Change your client's Ollama URL from `http://127.0.0.1:11434` to `http://127.0.0
 # Native API
 curl http://127.0.0.1:11435/api/chat \
   -d '{"model":"llama3.2","messages":[{"role":"user","content":"hi"}]}'
+
+# Anthropic-compatible API, as used by Claude Code (counted too)
+curl http://127.0.0.1:11435/v1/messages \
+  -d '{"model":"llama3.2","max_tokens":256,"messages":[{"role":"user","content":"hi"}]}'
 
 # OpenAI-compatible API (counted too)
 curl http://127.0.0.1:11435/v1/chat/completions \

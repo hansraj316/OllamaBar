@@ -13,9 +13,9 @@ final class UsageExporterTests: XCTestCase {
         let csv = UsageExporter.csv([record(), record(prompt: 1, eval: 2, durationMs: nil)])
         let lines = csv.split(separator: "\n").map(String.init)
         XCTAssertEqual(lines.count, 3)
-        XCTAssertEqual(lines[0], "timestamp,model,client_app,endpoint,prompt_tokens,eval_tokens,total_tokens,duration_ms")
-        XCTAssertEqual(lines[1], "2023-11-14T22:13:20Z,llama3.2,curl,/api/chat,10,20,30,1500")
-        XCTAssertTrue(lines[2].hasSuffix(",1,2,3,"), "missing duration exports as an empty field")
+        XCTAssertEqual(lines[0], "timestamp,model,client_app,endpoint,prompt_tokens,eval_tokens,total_tokens,duration_ms,cached_prompt_tokens,load_ms,eval_ms")
+        XCTAssertEqual(lines[1], "2023-11-14T22:13:20Z,llama3.2,curl,/api/chat,10,20,30,1500,,,")
+        XCTAssertTrue(lines[2].hasSuffix(",1,2,3,,,,"), "missing optional fields export as empty fields")
     }
 
     func test_csv_quotesFieldsContainingCommasOrQuotes() {
@@ -37,5 +37,13 @@ final class UsageExporterTests: XCTestCase {
         let records = [record()]
         XCTAssertEqual(try UsageExporter.data(records, format: .csv), Data(UsageExporter.csv(records).utf8))
         XCTAssertEqual(try UsageExporter.data(records, format: .json), try UsageExporter.json(records))
+    }
+
+    func test_csv_includesCacheAndOllamaTimings() {
+        let r = UsageRecord(timestamp: Date(timeIntervalSince1970: 1_700_000_000), model: "m", clientApp: "a",
+                            endpoint: "/api/chat", promptTokens: 100, evalTokens: 50, durationMs: 3000,
+                            cachedPromptTokens: 80, loadDurationNs: 2_400_000_000, evalDurationNs: 1_250_000_000)
+        let row = UsageExporter.csv([r]).split(separator: "\n").map(String.init)[1]
+        XCTAssertTrue(row.hasSuffix(",100,50,150,3000,80,2400,1250"), row)
     }
 }

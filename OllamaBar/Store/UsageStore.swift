@@ -168,6 +168,44 @@ final class UsageStore {
         return rates.reduce(0, +) / Double(rates.count)
     }
 
+    /// True when at least one of today's speeds came from Ollama's generation timer.
+    var todayHasMeasuredSpeed: Bool { todayRecords.contains(where: \.hasMeasuredSpeed) }
+
+    // MARK: - Prompt cache
+
+    /// Today's requests whose response reported a cached-token count.
+    private var todayCacheReporting: [UsageRecord] {
+        todayRecords.filter { $0.cachedPromptTokens != nil && $0.promptTokens > 0 }
+    }
+
+    /// Share of today's prompt tokens served from cache, over requests that report it.
+    /// Requests that cannot report a cache count are left out rather than counted as misses.
+    var todayCacheHitRate: Double? {
+        let reporting = todayCacheReporting
+        let prompt = reporting.reduce(0) { $0 + $1.promptTokens }
+        guard prompt > 0 else { return nil }
+        let cached = reporting.reduce(0) { $0 + ($1.cachedPromptTokens ?? 0) }
+        return min(1, Double(cached) / Double(prompt))
+    }
+
+    var todayCachedPromptTokens: Int {
+        todayCacheReporting.reduce(0) { $0 + ($1.cachedPromptTokens ?? 0) }
+    }
+
+    // MARK: - Model loads
+
+    /// True when at least one of today's responses reported a load time, so a zero
+    /// cold-load count means "all warm" rather than "not measured".
+    var todayHasLoadTimings: Bool { todayRecords.contains { $0.loadDurationNs != nil } }
+
+    var todayColdLoadCount: Int { todayRecords.filter(\.isColdLoad).count }
+
+    /// Seconds spent loading models from disk today, across cold loads.
+    var todayColdLoadSeconds: Double {
+        todayRecords.filter(\.isColdLoad)
+            .reduce(0) { $0 + Double($1.loadDurationNs ?? 0) / 1_000_000_000 }
+    }
+
     /// Mean wall-clock time across today's requests that recorded a duration.
     var averageLatencyMs: Int? {
         let durations = todayRecords.compactMap(\.durationMs)

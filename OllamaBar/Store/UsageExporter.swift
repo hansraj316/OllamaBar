@@ -15,7 +15,7 @@ enum UsageExporter {
     }()
 
     static func csv(_ records: [UsageRecord]) -> String {
-        var lines = ["timestamp,model,client_app,endpoint,prompt_tokens,eval_tokens,total_tokens,duration_ms"]
+        var lines = ["timestamp,model,client_app,endpoint,prompt_tokens,eval_tokens,total_tokens,duration_ms,cached_prompt_tokens,load_ms,eval_ms"]
         for r in records {
             lines.append([
                 isoFormatter.string(from: r.timestamp),
@@ -25,7 +25,10 @@ enum UsageExporter {
                 String(r.promptTokens),
                 String(r.evalTokens),
                 String(r.totalTokens),
-                r.durationMs.map(String.init) ?? ""
+                r.durationMs.map(String.init) ?? "",
+                r.cachedPromptTokens.map(String.init) ?? "",
+                r.loadDurationMs.map(String.init) ?? "",
+                r.evalDurationNs.map { String($0 / 1_000_000) } ?? ""
             ].joined(separator: ","))
         }
         return lines.joined(separator: "\n") + "\n"

@@ -188,10 +188,36 @@ private struct StatTiles: View {
             StatTile(
                 title: "Speed",
                 value: store.averageTokensPerSecond.map { Format.rate($0) } ?? "—",
-                detail: store.averageLatencyMs.map { "Avg \(Format.duration(ms: $0)) per request" } ?? "Measured per response",
+                detail: speedDetail(store),
                 symbol: "gauge.with.dots.needle.67percent"
             )
+            StatTile(
+                title: "Cache hits",
+                value: store.todayCacheHitRate.map { Format.percent($0) } ?? "—",
+                detail: store.todayCacheHitRate == nil
+                    ? "Reported by newer Ollama"
+                    : "\(Format.compact(store.todayCachedPromptTokens)) prompt tokens reused",
+                symbol: "arrow.triangle.2.circlepath"
+            )
+            StatTile(
+                title: "Cold loads",
+                value: store.todayHasLoadTimings ? "\(store.todayColdLoadCount)" : "—",
+                detail: coldLoadDetail(store),
+                symbol: "snowflake"
+            )
         }
+    }
+
+    private func speedDetail(_ store: UsageStore) -> String {
+        guard let latency = store.averageLatencyMs else { return "Measured per response" }
+        let average = Format.duration(ms: latency)
+        return store.todayHasMeasuredSpeed ? "Excl. load · \(average) avg" : "Avg \(average) per request"
+    }
+
+    private func coldLoadDetail(_ store: UsageStore) -> String {
+        guard store.todayHasLoadTimings else { return "Native API requests only" }
+        guard store.todayColdLoadCount > 0 else { return "Every model was warm" }
+        return String(format: "%.1f s loading from disk", store.todayColdLoadSeconds)
     }
 }
 

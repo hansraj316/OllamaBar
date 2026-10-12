@@ -24,6 +24,58 @@ final class ModelDecodingTests: XCTestCase {
         XCTAssertEqual(record.tokensPerSecond!, 50, accuracy: 0.001)
     }
 
+    func test_usageRecord_decodesWithoutCacheOrTimingFields() throws {
+        let v30 = """
+        {"id":"6BA7B810-9DAD-11D1-80B4-00C04FD430C8","timestamp":"2026-09-01T10:00:00Z",
+         "model":"llama3.2","clientApp":"curl","endpoint":"/api/chat","promptTokens":10,"evalTokens":20,"durationMs":900}
+        """
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let record = try decoder.decode(UsageRecord.self, from: Data(v30.utf8))
+        XCTAssertEqual(record.durationMs, 900)
+        XCTAssertNil(record.cachedPromptTokens)
+        XCTAssertNil(record.evalDurationNs)
+        XCTAssertFalse(record.isColdLoad)
+        XCTAssertNil(record.cacheHitRate)
+    }
+
+    func test_usageRecord_speedPrefersOllamaEvalTimerOverWallClock() {
+        // 100 tokens in 1 s of generation, but 5 s wall-clock because the model was cold.
+        let record = UsageRecord(model: "m", clientApp: "a", endpoint: "/api/chat",
+                                 promptTokens: 5, evalTokens: 100, durationMs: 5000,
+                                 loadDurationNs: 3_500_000_000, evalDurationNs: 1_000_000_000)
+        XCTAssertEqual(record.tokensPerSecond!, 100, accuracy: 0.001)
+        XCTAssertTrue(record.hasMeasuredSpeed)
+    }
+
+    func test_usageRecord_speedFallsBackToWallClockWithoutEvalTimer() {
+        let record = UsageRecord(model: "m", clientApp: "a", endpoint: "/v1/messages",
+                                 promptTokens: 5, evalTokens: 100, durationMs: 4000)
+        XCTAssertEqual(record.tokensPerSecond!, 25, accuracy: 0.001)
+        XCTAssertFalse(record.hasMeasuredSpeed)
+    }
+
+    func test_usageRecord_coldLoadThreshold() {
+        func record(loadNs: Int?) -> UsageRecord {
+            UsageRecord(model: "m", clientApp: "a", endpoint: "/api/chat", promptTokens: 1, evalTokens: 1,
+                        loadDurationNs: loadNs)
+        }
+        XCTAssertFalse(record(loadNs: nil).isColdLoad)
+        XCTAssertFalse(record(loadNs: 80_000_000).isColdLoad, "an already-loaded model reports tens of ms")
+        XCTAssertTrue(record(loadNs: UsageRecord.coldLoadThresholdNs).isColdLoad)
+        XCTAssertTrue(record(loadNs: 2_400_000_000).isColdLoad)
+        XCTAssertEqual(record(loadNs: 2_400_000_000).loadDurationMs, 2400)
+    }
+
+    func test_usageRecord_cacheHitRateIsClampedToOne() {
+        let normal = UsageRecord(model: "m", clientApp: "a", endpoint: "/api/chat",
+                                 promptTokens: 200, evalTokens: 1, cachedPromptTokens: 150)
+        XCTAssertEqual(normal.cacheHitRate!, 0.75, accuracy: 0.001)
+        let odd = UsageRecord(model: "m", clientApp: "a", endpoint: "/api/chat",
+                              promptTokens: 10, evalTokens: 1, cachedPromptTokens: 40)
+        XCTAssertEqual(odd.cacheHitRate!, 1, accuracy: 0.001)
+    }
+
     func test_settings_decodesLegacyFileWithDefaultsForNewKeys() throws {
         let legacy = #"{"proxyPort":11440,"targetURL":"http://localhost:11434","dailyBudgetTokens":500,"budgetMode":"hard","costPer1kInputTokens":0.1,"costPer1kOutputTokens":0.2}"#
         let settings = try JSONDecoder().decode(Settings.self, from: Data(legacy.utf8))
