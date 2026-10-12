@@ -185,6 +185,32 @@ final class ProxyServerTests: XCTestCase {
         XCTAssertEqual(receivedRecord?.tokensPerSecond ?? 0, 50, accuracy: 0.001)
         XCTAssertEqual(receivedRecord?.isColdLoad, true)
     }
+
+    func test_embedRequest_isRecorded() async throws {
+        let mockBody = #"{"model":"embeddinggemma","embeddings":[[0.01,-0.02,0.03]],"total_duration":14143917,"load_duration":1019500,"prompt_eval_count":12}"#
+        let mockServer = MockHTTPServer(port: 19447, responseBody: mockBody)
+        try await mockServer.startAndWaitReady()
+        defer { mockServer.stop() }
+
+        let proxy = ProxyServer(port: 19448, targetURL: URL(string: "http://127.0.0.1:19447")!)
+        var receivedRecord: UsageRecord?
+        proxy.onRecord = { receivedRecord = $0 }
+        try await proxy.startAndWaitReady()
+        defer { proxy.stop() }
+
+        var req = URLRequest(url: URL(string: "http://127.0.0.1:19448/api/embed")!)
+        req.httpMethod = "POST"
+        req.httpBody = #"{"model":"embeddinggemma","input":"why is the sky blue?"}"#.data(using: .utf8)
+        let (data, _) = try await session.data(for: req)
+        try await Task.sleep(nanoseconds: 200_000_000)
+
+        XCTAssertTrue(String(data: data, encoding: .utf8)?.contains("embeddings") == true,
+                      "the vectors still reach the client untouched")
+        XCTAssertEqual(receivedRecord?.model, "embeddinggemma")
+        XCTAssertEqual(receivedRecord?.promptTokens, 12)
+        XCTAssertEqual(receivedRecord?.evalTokens, 0)
+        XCTAssertEqual(receivedRecord?.endpoint, "/api/embed")
+    }
 }
 
 // MARK: - ProxyServer async start helper

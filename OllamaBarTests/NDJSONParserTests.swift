@@ -241,6 +241,47 @@ final class NDJSONParserTests: XCTestCase {
         XCTAssertNil(parser.finalize())
     }
 
+    // MARK: - Embeddings
+
+    func test_embed_countsInputTokensWithZeroOutput() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"embeddinggemma","embeddings":[[0.010071029,-0.0017594862,0.05007221]],"total_duration":14143917,"load_duration":1019500,"prompt_eval_count":8}"#)
+        let result = parser.finalize()
+        XCTAssertEqual(result?.model, "embeddinggemma")
+        XCTAssertEqual(result?.promptTokens, 8)
+        XCTAssertEqual(result?.evalTokens, 0)
+        XCTAssertEqual(result?.loadDurationNs, 1_019_500)
+        XCTAssertNil(result?.evalDurationNs)
+    }
+
+    func test_embed_batchOfInputsIsOneRecord() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"nomic-embed-text","embeddings":[[0.1,0.2],[0.3,0.4],[0.5,0.6]],"prompt_eval_count":27}"#)
+        XCTAssertEqual(parser.finalize()?.promptTokens, 27)
+    }
+
+    func test_embed_withoutCountRecordsNothing() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"model":"m","embeddings":[[0.1,0.2]]}"#)
+        XCTAssertNil(parser.finalize())
+    }
+
+    func test_legacyEmbeddingsEndpointHasNoCountsToRecord() {
+        // The deprecated /api/embeddings returns a bare vector and no usage at all.
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"embedding":[0.5670403838157654,0.009260174818336964]}"#)
+        XCTAssertNil(parser.finalize())
+    }
+
+    func test_openAIEmbeddings_countInputWithZeroOutput() {
+        let parser = NDJSONParser()
+        parser.ingest(line: #"{"object":"list","data":[{"object":"embedding","embedding":[0.1,0.2],"index":0}],"model":"all-minilm","usage":{"prompt_tokens":8,"total_tokens":8}}"#)
+        let result = parser.finalize()
+        XCTAssertEqual(result?.model, "all-minilm")
+        XCTAssertEqual(result?.promptTokens, 8)
+        XCTAssertEqual(result?.evalTokens, 0)
+    }
+
     // MARK: - Client detection
 
     func test_clientAppParser_recognizesCursor() {
